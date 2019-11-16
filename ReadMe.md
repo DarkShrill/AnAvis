@@ -1,1 +1,1 @@
-Progetto Ingegneria del Software
+Progetto Ingegneria del Software creato da @EdoardoPapa e @MaricaQuadrini
