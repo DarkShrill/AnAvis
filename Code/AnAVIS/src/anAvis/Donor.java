@@ -132,9 +132,9 @@ public class Donor implements Account {
 	
 	
 	/**
-	 * Il metodo controlla se il donatore può effettuare una prenotazione per la donazione
+	 * Il metodo controlla se il donatore puï¿½ effettuare una prenotazione per la donazione
 	 * 
-	 * @return true se il donatore può effettuare una donazione, false altrimenti
+	 * @return true se il donatore puï¿½ effettuare una donazione, false altrimenti
 	 */
 	@SuppressWarnings("deprecation")
 	private boolean canDonate() {

@@ -28,7 +28,6 @@ public class Reservation {
 	private FormInterface form;
 
 	public Reservation(String avisOffice, String date, String hour) {
-		super();
 		this.avisOffice = avisOffice;
 		this.date = date;
 		this.hour = hour;

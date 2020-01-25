@@ -5,6 +5,8 @@ package interfaces;
 
 import java.util.List;
 
+import anAvis.AvaiableDateAndHours;
+
 /**
  * @author edoardo
  *
@@ -109,6 +111,42 @@ public interface ViewInterface {
 	 * Questo metodo permette di restituire una sede Avis selezionata
 	 */
 	public String selectAvisOfficeDates(List<String> list);
+
+	/**
+	 * 	Questo metodo chiede all'utente se vuole inserire un nuovo orario/data.
+	 * @return sceltaUtente
+	 */
+	public boolean doYouWantAddNewAvaiableDate();
+
+	/**
+	 * Questo metodo chiede all'utente di inserire una data valida.
+	 * @return date
+	 */
+	public String getAvaiableDate();
+	
+	/**
+	 * Questo metodo chiede all'utente di inserire degli orari validi per una 
+	 * 	specifica data
+	 * @return hours
+	 */
+	public String getAvaiableHours();
+	
+	/**
+	 * Questo metodo permette di ritornare nella schermata principale
+	 */
+	public void goToMainView();
+	
+	/**
+	 * Questo metodo permette di ritornare la scelta fatta dall'utente
+	 * @return index - scelta fatta dall'utente
+	 */
+	public int getSelectedAvaiableDateAndHour();
+
+	/**
+	 * Questo metodo chiede all'utente se vuole modificare la data o gli orari
+	 * @return choose 
+	 */
+	public String getDateOrHours();
 	
 	//----------------------------------------------------------
 	//------------------------- MESSAGE ------------------------
@@ -127,5 +165,30 @@ public interface ViewInterface {
 	 * 		credenziali inserite, quindi, deve ri-inserirle.
 	 */
 	public void showCredentialsErrorMessage();
+
+	/**
+	 * Questo metodo permette di mostrare all'utente che deve inserire delle date e
+	 * 	degli orari
+	 */
+	public void showMessageForInsertAvaiableDatesAndHours();
+
+	/**
+	 * Questo messaggio notifica all'utente che sono state inserite delle date non
+	 * 	valide, quindi l'utente è pregato di rinserirle
+	 */
+	public void showMessageForInsertCorrectHour();
+
+	/**
+	 * Questo metodo permette di mostrare all'utente tutte le date disponibili con i 
+	 * 	relativi orari
+	 * @param listAvaiableDateAndHour
+	 */
+	public void showListAvaiableDateAndHour(List<AvaiableDateAndHours> listAvaiableDateAndHour);
+
+
+
+
+
+
 
 }

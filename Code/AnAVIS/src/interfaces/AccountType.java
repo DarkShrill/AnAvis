@@ -10,6 +10,7 @@ package interfaces;
 
 public enum AccountType {
 	
+	NOONE,
 	DONOR,
 	AVIS_OFFICE,
 	EMERGENCY_ROOM,

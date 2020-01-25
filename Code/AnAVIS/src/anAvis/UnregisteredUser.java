@@ -132,7 +132,7 @@ public class UnregisteredUser {
 		} else if (this.accountType == AccountType.EMERGENCY_ROOM) {
 			emergency = new EmergencyRoom(this.email, this.password, this.view.getSite(), this.view, this.network);
 		} else if (this.accountType == AccountType.AVIS_OFFICE) {
-			avisSite = new AvisOffice(this.email, this.password, this.view.getSite());
+			avisSite = new AvisOffice(this.email, this.password, this.view.getSite(),this.network,this.view);
 		}
 
 		if (!this.view.getConfirmation()) {
@@ -222,35 +222,5 @@ public class UnregisteredUser {
 		return this.accountToString;
 	}
 
-	// POSSO PURE LEVARLI
-
-//	public void setAccountType(AccountType account) {
-//		this.accountType = account;
-//	}
-//
-//
-//	public void setEmail(String email) {
-//		this.email = email;
-//	}
-//
-//	public void setPassword(String password) {
-//		this.password = password;
-//	}	
-//	
-//	public AccountType getAccountType() {
-//		return this.accountType;
-//	}
-//
-//	
-//
-//	
-//	public String getEmail() {
-//		return this.email;
-//	}
-//
-//	
-//	public String getPassword() {
-//		return this.password;
-//	}
 
 }
