@@ -63,8 +63,8 @@ public class Main {
 			if (accountType == AccountType.DOCTOR) {
 				doctor = new Doctor(email,password, new Object());
 			} else if (accountType == AccountType.DONOR) {
-				donor = new Donor(email,password,view.getBloodGroup(),
-						network.getEnableToEmergencyRequest(),network,view, network.getResidence(), network.getGender());
+				donor = new Donor(network.getNameFromEmail(email),network.getSurnameFromEmail(email),email,password,view.getBloodGroup(),
+						network.getEnableToEmergencyRequest(email),network,view, network.getResidence(), network.getGender());
 			} else if (accountType == AccountType.EMERGENCY_ROOM) {
 				emergency = new EmergencyRoom(email, password, network.getSite(), view, network);
 			} else if (accountType == AccountType.AVIS_OFFICE) {

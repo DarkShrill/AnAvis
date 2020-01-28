@@ -3,6 +3,7 @@
  */
 package view;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -396,42 +397,43 @@ public class Console implements ViewInterface {
 		return Integer.parseInt(input);
 	}
 
-	@Override
-	public String selectAvisOfficeDates(List<String> list) {
-		boolean correctInput = false;
-		int choice = -1;
-		Scanner scanner = new Scanner(System.in);
-		String input = "";
-		
-		System.out.println("####  A seguire troverai tutte le date disponibili per la sede avis selezionata:      ");
-		System.out.println("####  		Si prega di inserire il numero associato all'orario scelto     ");
-		System.out.println("");
-		for(int i = 0; i < list.size(); i++) {
-			System.out.println("####  " + i +" )  " + list.get(i));	
-		}
-		System.out.println("");
-		
-		do {
-			System.out.println("#### Inserisci la tua scelta : ");
-			input = scanner.nextLine();
-			
-			if(input.compareTo("") != 0) {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
-				correctInput = false;
-			}else {
-				correctInput = true;
-				choice = Integer.parseInt(input);
-				if(choice > list.size() - 1) {
-					correctInput = false;
-					System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
-				}
-			}
-		}while(!correctInput);
-		
-		return list.get(choice);
-	}
+//	@Override
+//	public String selectAvisOfficeDates(List<String> list) {
+//		boolean correctInput = false;
+//		int choice = -1;
+//		Scanner scanner = new Scanner(System.in);
+//		String input = "";
+//		
+//		System.out.println("####  A seguire troverai tutte le date disponibili per la sede avis selezionata:      ");
+//		System.out.println("####  		Si prega di inserire il numero associato all'orario scelto     ");
+//		System.out.println("");
+//		for(int i = 0; i < list.size(); i++) {
+//			System.out.println("####  " + i +" )  " + list.get(i));	
+//		}
+//		System.out.println("");
+//		
+//		do {
+//			System.out.println("#### Inserisci la tua scelta : ");
+//			input = scanner.nextLine();
+//			
+//			if(input.compareTo("") != 0) {
+//				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+//				correctInput = false;
+//			}else {
+//				correctInput = true;
+//				choice = Integer.parseInt(input);
+//				if(choice > list.size() - 1) {
+//					correctInput = false;
+//					System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+//				}
+//			}
+//		}while(!correctInput);
+//		
+//		return list.get(choice);
+//	}
 
 	@Override
+
 	public boolean doYouWantAddNewAvaiableDate() {
 		boolean correctInput = false;
 		boolean enable = false;
@@ -488,13 +490,14 @@ public class Console implements ViewInterface {
 	}
 
 	@Override
-	public String getAvaiableHours() {
+	public List<String> getAvaiableHours() {
 		boolean correctInput = false;
 		int choice = -1;
 		String input = "";
 		Scanner scanner = new Scanner(System.in);
 		
-		System.out.println("####  Perfavore, inserisci l'orario che si desidera:      ");
+		System.out.println("####  Perfavore, inserisci l'orario che si desidera:     (Si prega di inserire orari multipli"
+				+ " \n 		nella seguente maniera: HH:MM,HH:MM,HH:MM ecc.) ");
 		System.out.println("");
 		
 		do {
@@ -509,9 +512,72 @@ public class Console implements ViewInterface {
 			}
 		}while(!correctInput);
 		
-		return input;
-	}
+		String[] strList = input.split(",");
+		
+		List<String> list = new ArrayList<String>();
 
+		for (String s : strList) {
+			list.add(s);
+		}
+		return list;
+	}
+	
+	@Override
+	public AvaiableDateAndHours getModifyHours(AvaiableDateAndHours avaiableDateAndHours) {
+		boolean correctInput = false;
+		int choice = -1;
+		String input = "";
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.println("####  Perfavore, inserisci l'orario che si desidera modificare: \n"
+				+ "			Si prega di inserire il numero associato all'orario scelto");
+		System.out.println("");
+		
+		do {
+			System.out.println("#### Inserisci la tua scelta : ");
+			input = scanner.nextLine();
+			
+			if(input.compareTo("") != 0) {
+				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				correctInput = false;
+			}else {
+				correctInput = true;
+				choice = Integer.parseInt(input);
+				if(choice > avaiableDateAndHours.getHours().size() - 1) {
+					correctInput = false;
+					System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				}
+			}
+		}while(!correctInput);
+		
+		avaiableDateAndHours.addIndexOfModifyHour(choice);
+		
+		System.out.println("####  Perfavore, inserisci l'orario modificato:");
+		System.out.println("");
+		
+		do {
+			System.out.println("#### Inserisci la tua scelta : ");
+			input = scanner.nextLine();
+			
+			if(input.compareTo("") != 0) {
+				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				correctInput = false;
+			}else {
+				correctInput = true;
+			}
+		}while(!correctInput);
+		
+		List<String> tempList = avaiableDateAndHours.getHours();
+		
+		tempList.remove(choice);
+		
+		tempList.add(choice,input);
+		
+		avaiableDateAndHours.setHours(tempList);
+
+		return avaiableDateAndHours;
+	}
+	
 	@Override
 	public void goToMainView() {
 		System.out.println("\n\n\n\n\n\n###############################################################");
@@ -704,6 +770,126 @@ public class Console implements ViewInterface {
 		System.out.println("==============================================================");
 		System.out.println("|                                                            |");
 		System.out.println("==============================================================\n\n");
+	}
+
+	@Override
+	public String selectAvisOfficeDate(List<String> list) {
+		boolean correctInput = false;
+		int choice = -1;
+		Scanner scanner = new Scanner(System.in);
+		String input = "";
+		
+		System.out.println("####  A seguire troverai tutte le date disponibili per la sede avis selezionata:      ");
+		System.out.println("####  		Si prega di inserire il numero associato alla data scelta     ");
+		System.out.println("");
+		for(int i = 0; i < list.size(); i++) {
+			System.out.println("####  " + i +" )  " + list.get(i));	
+		}
+		System.out.println("");
+		
+		do {
+			System.out.println("#### Inserisci la tua scelta : ");
+			input = scanner.nextLine();
+			
+			if(input.compareTo("") != 0) {
+				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				correctInput = false;
+			}else {
+				correctInput = true;
+				choice = Integer.parseInt(input);
+				if(choice > list.size() - 1) {
+					correctInput = false;
+					System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				}
+			}
+		}while(!correctInput);
+		
+		return list.get(choice);
+	}
+
+	@Override
+	public String selectAvisOfficeHour(List<String> list) {
+		boolean correctInput = false;
+		int choice = -1;
+		Scanner scanner = new Scanner(System.in);
+		String input = "";
+		
+		System.out.println("####  A seguire troverai tutte gli orari disponibili per la data selezionata:      ");
+		System.out.println("####  		Si prega di inserire il numero associato all'orario scelt     ");
+		System.out.println("");
+		for(int i = 0; i < list.size(); i++) {
+			System.out.println("####  " + i +" )  " + list.get(i));	
+		}
+		System.out.println("");
+		
+		do {
+			System.out.println("#### Inserisci la tua scelta : ");
+			input = scanner.nextLine();
+			
+			if(input.compareTo("") != 0) {
+				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				correctInput = false;
+			}else {
+				correctInput = true;
+				choice = Integer.parseInt(input);
+				if(choice > list.size() - 1) {
+					correctInput = false;
+					System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				}
+			}
+		}while(!correctInput);
+		
+		return list.get(choice);
+	}
+
+	@Override
+	public String getName() {
+		boolean correctInput = false;
+		Scanner scanner = new Scanner(System.in);
+		String input = "";
+		
+		System.out.println("####  Perfavore,inserisci un nome : ");
+		System.out.println("");
+		
+		do {
+			System.out.println("#### Inserisci la tua scelta : ");
+			input = scanner.nextLine();
+			
+			if(input.compareTo("") != 0) {
+				correctInput = true;
+			}else {
+				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				correctInput = false;
+			}
+
+		}while(!correctInput);
+		
+		return input;
+	}
+
+	@Override
+	public String getSurname() {
+		boolean correctInput = false;
+		Scanner scanner = new Scanner(System.in);
+		String input = "";
+		
+		System.out.println("####  Perfavore,inserisci un cognome : ");
+		System.out.println("");
+		
+		do {
+			System.out.println("#### Inserisci la tua scelta : ");
+			input = scanner.nextLine();
+			
+			if(input.compareTo("") != 0) {
+				correctInput = true;
+			}else {
+				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				correctInput = false;
+			}
+
+		}while(!correctInput);
+		
+		return input;
 	}
 
 }
