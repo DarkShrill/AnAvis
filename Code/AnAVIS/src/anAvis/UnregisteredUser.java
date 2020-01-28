@@ -108,7 +108,6 @@ public class UnregisteredUser {
 		return "ERROR";
 	}
 
-
 	/**
 	 * Costruttore
 	 * 
@@ -119,10 +118,7 @@ public class UnregisteredUser {
 
 		this.network = network;
 		this.view = view;
-	}
-	
-	public void createAccount() {
-		
+
 		this.accountType = this.view.getAccountType();
 		this.accountToString = accountToString();
 
@@ -131,7 +127,7 @@ public class UnregisteredUser {
 		if (this.accountType == AccountType.DOCTOR) {
 			doctor = new Doctor(this.email, this.password, this.view.getDocument());
 		} else if (this.accountType == AccountType.DONOR) {
-			donor = new Donor(this.view.getName(),this.view.getSurname(),this.email, this.password, this.view.getBloodGroup(),
+			donor = new Donor(this.email, this.password, this.view.getBloodGroup(),
 					this.view.getEnableToEmergencyRequest(), this.network, this.view, this.view.getResidence(), this.view.getGender());
 		} else if (this.accountType == AccountType.EMERGENCY_ROOM) {
 			emergency = new EmergencyRoom(this.email, this.password, this.view.getSite(), this.view, this.network);
@@ -158,6 +154,7 @@ public class UnregisteredUser {
 			// SE QUALCOSA E' ANDATO STORTO
 			this.view.showRepeatOperationMessage();
 		}
+
 	}
 	
 	/**

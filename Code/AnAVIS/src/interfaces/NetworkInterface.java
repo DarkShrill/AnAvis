@@ -31,7 +31,7 @@ public interface NetworkInterface<T extends Account> {
 	public boolean sendRequest(T account);
 
 	/**
-	 * Questo metodo verifica la validitï¿½ delle credenziali inserite e autentica
+	 * Questo metodo verifica la validità delle credenziali inserite e autentica
 	 * l'utente
 	 * 
 	 * @return true se l'utente viene autenticato, false altrimenti
@@ -118,14 +118,5 @@ public interface NetworkInterface<T extends Account> {
 	 */
 	public boolean sendModifyAvaiableDateAndHours(String site, List<AvaiableDateAndHours> list, int indexData,
 			int indexHour, String date, String hours);
-	
-	/**
-	 * Questo metodo permette di restituire i dati relativi a un determinato account
-	 * @param email
-	 * @return
-	 */
-	public Account getAccountData(AccountType account, String email);
-	
-	
 
 }

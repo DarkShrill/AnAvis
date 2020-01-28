@@ -52,6 +52,14 @@ public class EmergencyRoom implements Account {
 	private ViewInterface view;
 
 
+	public EmergencyRoom() {
+		this.accountType = AccountType.EMERGENCY_ROOM;
+		this.accountToString = "PRONTO SOCCORSO";
+		this.email = null;
+		this.password = null;
+		this.site = null;
+	}
+
 	public EmergencyRoom(String email, String password, String site, ViewInterface view, NetworkInterface<?> network) {
 		this.accountType = AccountType.EMERGENCY_ROOM;
 		this.accountToString = "PRONTO SOCCORSO";
@@ -65,10 +73,10 @@ public class EmergencyRoom implements Account {
 	
 	/**
 	 * Questo metodo invia una richiesta di carenza sangue a tutti i donatori che rispondono ai criteri richiesti,
-	 * ovvero:  disponibilit√†, prossimit√† geografica con il Pronto Soccorso (raggio di 40 km), 
+	 * ovvero:  disponibilit‡, prossimit‡ geografica con il Pronto Soccorso (raggio di 40 km), 
 	 * gruppo sanguigno e ultima donazione effettuata
 
-	 * @return true se l'operazione √® andata a buon fine, false altrimenti
+	 * @return true se l'operazione Ë andata a buon fine, false altrimenti
 	 */
 	public boolean bloodEmergencyRequest(String bloodGroup) {
 		

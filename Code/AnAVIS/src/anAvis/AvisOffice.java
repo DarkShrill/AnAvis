@@ -1,13 +1,11 @@
 package anAvis;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import interfaces.Account;
 import interfaces.AccountType;
 import interfaces.NetworkInterface;
 import interfaces.ViewInterface;
+
+import java.util.*;
 
 /**
  * 
@@ -66,7 +64,7 @@ public class AvisOffice implements Account {
 
 		boolean wantExit = false;
 		String date;
-		List<String> hours;
+		String hours;
 		boolean correctHours;
 		List<AvaiableDateAndHours> listAvaiableDateAndHour = new ArrayList<>();
 
@@ -92,7 +90,7 @@ public class AvisOffice implements Account {
 
 				} while (!correctHours);
 
-				AvaiableDateAndHours avaiableDateAndHours = new AvaiableDateAndHours(date, hours);
+				AvaiableDateAndHours avaiableDateAndHours = new AvaiableDateAndHours(date, getListFromString(hours));
 				listAvaiableDateAndHour.add(avaiableDateAndHours);
 
 			}
@@ -117,32 +115,33 @@ public class AvisOffice implements Account {
 	}
 
 	public void modifyAvaibleDatesAndHours() {
+
 		List<AvaiableDateAndHours> listAvaiableDateAndHour = new ArrayList<>();
-		Pair<Integer, String> date = null;
-		Pair<Integer, String> hour = null;
+		int index = -1;
+		String date = "";
+		String hours = "";
 		boolean correctHours = false;
 
 		listAvaiableDateAndHour = this.network.getListAvaiableDateAndHours(this.site);
 
+		this.view.showListAvaiableDateAndHour(listAvaiableDateAndHour);
+
+		index = this.view.getSelectedAvaiableDateAndHour();
+
 		if (this.view.getDateOrHours().contains("DATE")) {
 			// MODIFICA DELLA DATA
-			date = this.view.getAvaiableDate(listAvaiableDateAndHour, true);
+			date = this.view.getAvaiableDate();
 		} else {
 			// MODIFICA DEGLI ORARI
 			do {
-				date = this.view.getAvaiableDate(listAvaiableDateAndHour, false);
-				hour = this.view.getAvaiableHours(listAvaiableDateAndHour, date.getKey());
+				hours = this.view.getAvaiableHours();
 
-				List<String> tmpHourList = new LinkedList<String>();
-				tmpHourList.add(hour.getValue());
-
-				correctHours = this.checkCorretHours(tmpHourList);
+				correctHours = this.checkCorretHours(hours);
 
 				if (!correctHours) {
 					this.view.showMessageForInsertCorrectHour();
-				} else {
-					tmpHourList.remove(0);
 				}
+
 			} while (!correctHours);
 		}
 
@@ -155,12 +154,22 @@ public class AvisOffice implements Account {
 			this.site = null;
 		}
 
-		if (!this.network.sendModifyAvaiableDateAndHours(this.site, listAvaiableDateAndHour, date.getKey(),
-				hour == null ? -1 : hour.getKey(), date.getValue(), hour == null ? "" : hour.getValue())) {
+		if (!this.network.sendModifyAvaiableDateAndHours(this.site, listAvaiableDateAndHour, index, date, hours)) {
 			// SE QUALCOSA E' ANDATO STORTO
 			this.view.showRepeatOperationMessage();
 			this.view.goToMainView();
 		}
+
+	}
+
+	private List<String> getListFromString(String str) {
+		String[] strList = str.split(",");
+		List<String> list = new ArrayList<String>();
+
+		for (String s : strList) {
+			list.add(s);
+		}
+		return list;
 	}
 
 	/**
@@ -172,9 +181,10 @@ public class AvisOffice implements Account {
 	 * 
 	 * @return boolean
 	 */
-	private boolean checkCorretHours(List<String> hours) {
+	private boolean checkCorretHours(String hours) {
+		String[] strList = hours.split(",");
 
-		for (String str : hours) {
+		for (String str : strList) {
 			// DEVE ESSERE LUNGO 5 PERCHE COMPOSTO COSI : HH:MM
 			if (str.length() != 5) {
 				return false;
