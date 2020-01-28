@@ -30,9 +30,9 @@ public class Main {
 		String password="";
 		AccountType accountType = AccountType.NOONE;
 		Doctor doctor;
-		Donor donor;
+		Donor donor = null;
 		EmergencyRoom emergency;
-		AvisOffice avisSite;
+		AvisOffice avisSite = null;
 		
 		
 		view = new Console();
@@ -64,11 +64,11 @@ public class Main {
 				doctor = new Doctor(email,password, new Object());
 			} else if (accountType == AccountType.DONOR) {
 				donor = new Donor(network.getNameFromEmail(email),network.getSurnameFromEmail(email),email,password,view.getBloodGroup(),
-						network.getEnableToEmergencyRequest(email),network,view, network.getResidence(), network.getGender());
+						network.getEnableToEmergencyRequest(email),network,view, network.getResidence(email), network.getGender(email));
 			} else if (accountType == AccountType.EMERGENCY_ROOM) {
-				emergency = new EmergencyRoom(email, password, network.getSite(), view, network);
+				emergency = new EmergencyRoom(email, password, network.getSite(email), view, network);
 			} else if (accountType == AccountType.AVIS_OFFICE) {
-				avisSite = new AvisOffice(email, password, network.getSite(),network,view);
+				avisSite = new AvisOffice(email, password, network.getSite(email),network,view);
 			}
 			
 			choice = view.showSubMenu(accountType);

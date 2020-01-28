@@ -469,4 +469,40 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 		return false;
 	}
 
+	@Override
+	public String getNameFromEmail(String Email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getSurnameFromEmail(String Email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean getEnableToEmergencyRequest(String email) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getResidence(String email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public char getGender(String email) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getSite(String email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

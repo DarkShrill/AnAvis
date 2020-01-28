@@ -171,9 +171,6 @@ public class AvisOffice implements Account {
 			}
 		}
 		listAvaiableDateAndHour.get(index).clearIndexOfModifyHour();
-		
-
-
 	}
 
 	private List<String> getListFromString(String str) {
