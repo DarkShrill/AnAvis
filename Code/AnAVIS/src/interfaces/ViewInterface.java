@@ -148,6 +148,44 @@ public interface ViewInterface {
 	 */
 	public String getDateOrHours();
 	
+	/**
+	 * Questo metodo permette di mostrare a video un messaggio.
+	 * @param msg messaggio da mostrare a video
+	 */
+	public void printMessage(String msg);
+	
+	/**
+	 * Questo metodo permette di mostrare il menu dell'applicaizone
+	 */
+	public void printMenu();
+	
+	/**
+	 * Questo metodo permette di restituire la scelta fatta nel menu
+	 * @return
+	 */
+	public int getMenuChoice();
+	
+	/**
+	 * Questo metodo mi permette di mostrare i vari sottomenu di ogni tipo di account
+	 * @param accountType
+	 */
+	public int showSubMenu(AccountType accountType);
+	
+	/**
+	 *  Sottomenu di donor con al suo interno le funzioni che puo effettuare
+	 */
+	public void donorMenu();
+	
+	/**
+	 *  Sottomenu di avisOffice con al suo interno le funzioni che puo effettuare
+	 */
+	public void avisOfficeMenu();
+	
+	/**
+	 *  Sottomenu di emergencyRoom con al suo interno le funzioni che puo effettuare
+	 */
+	public void emergencyRoomMenu();
+	
 	//----------------------------------------------------------
 	//------------------------- MESSAGE ------------------------
 	//----------------------------------------------------------

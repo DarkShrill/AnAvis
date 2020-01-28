@@ -108,6 +108,7 @@ public class UnregisteredUser {
 		return "ERROR";
 	}
 
+
 	/**
 	 * Costruttore
 	 * 
@@ -118,7 +119,10 @@ public class UnregisteredUser {
 
 		this.network = network;
 		this.view = view;
-
+	}
+	
+	public void createAccount() {
+		
 		this.accountType = this.view.getAccountType();
 		this.accountToString = accountToString();
 
@@ -154,7 +158,6 @@ public class UnregisteredUser {
 			// SE QUALCOSA E' ANDATO STORTO
 			this.view.showRepeatOperationMessage();
 		}
-
 	}
 	
 	/**

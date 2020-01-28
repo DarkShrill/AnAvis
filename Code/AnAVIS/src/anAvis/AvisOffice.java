@@ -170,7 +170,7 @@ public class AvisOffice implements Account {
 			this.password = null;
 			this.site = null;
 		}
-
+//TODO: modificare questo sotto
 		if (!this.network.sendModifyAvaiableDateAndHours(this.site,index,date,hours)) {
 			// SE QUALCOSA E' ANDATO STORTO
 			this.view.showRepeatOperationMessage();
@@ -230,12 +230,6 @@ public class AvisOffice implements Account {
 		}
 		
 		return true;
-	}
-
-	public void setDateAndHourForBookingDay(int Year,int Month, int Day, int HourStart,int MinuteStart,int HourEnd,int MinuteEnd) {
-		//RIVEDERE DOPO CHE MARICA CREA QUELLA CLASSE
-		//FARE ANCHE IL GET
-		//METTERE LA RICHIESTA ALL?INTERNO DI NETWORK INTERFACE?
 	}
 	
 	public String getSite() {
