@@ -668,7 +668,12 @@ public class Console implements ViewInterface {
 	@Override
 	public void showListAvaiableDateAndHour(List<AvaiableDateAndHours> listAvaiableDateAndHour) {
 		System.out.println("####  Perfavore, scegli una tra le seguenti: ");
-		this.printList(listAvaiableDateAndHour);
+		for(int i = 0; i < listAvaiableDateAndHour.size(); i++) {
+			System.out.println(ANSI_RED + " " + i + ")  " + listAvaiableDateAndHour.get(i).getDate() + " : " + ANSI_RESET);
+			for(int j = 0; j < listAvaiableDateAndHour.size(); j++) {
+				System.out.println(ANSI_CYAN + " " + j + ")  " + listAvaiableDateAndHour.get(i).getHours().get(j) + ANSI_RESET);
+			}
+		}
 	}
 
 	@Override
