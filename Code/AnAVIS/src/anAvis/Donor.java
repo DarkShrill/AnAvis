@@ -101,6 +101,9 @@ public class Donor implements Account {
 	 */
 	public boolean reservationForBloodDonation(){
 		
+		boolean corretInput = false;
+		int avisOffice = -1;
+		
 		if(!canDonate()) {
 			return false;
 		}
@@ -113,7 +116,18 @@ public class Donor implements Account {
 		List<String> list = network.getAvisOffices();
 		view.printList(list);
 		
-		int avisOffice = view.getAvisOffice();
+		do {
+			avisOffice = view.getAvisOffice();
+			
+			if(avisOffice > list.size() - 1) {
+				corretInput = false;
+				view.showRepeatOperationMessage();
+			}
+			else {
+				corretInput = true;
+			}
+				
+		}while(!corretInput);
 		
 		HashMap<String, String> dates = network.getAvisOfficesAviableDates(list.get(avisOffice));
 		String date = view.selectAvisOfficeDate((List<String>) dates.values());

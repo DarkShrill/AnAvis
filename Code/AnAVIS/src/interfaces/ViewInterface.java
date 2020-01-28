@@ -134,7 +134,14 @@ public interface ViewInterface {
 	 * 	specifica data
 	 * @return hours
 	 */
-	public String getAvaiableHours();
+	public List<String> getAvaiableHours();
+	
+	/**
+	 * Questo metodo permetti di modificare un orario a scelta dell'utente
+	 * @param avaiableDateAndHours
+	 * @return
+	 */
+	public AvaiableDateAndHours getModifyHours(AvaiableDateAndHours avaiableDateAndHours) ;
 	
 	/**
 	 * Questo metodo permette di ritornare nella schermata principale
@@ -152,6 +159,44 @@ public interface ViewInterface {
 	 * @return choose 
 	 */
 	public String getDateOrHours();
+	
+	/**
+	 * Questo metodo permette di mostrare a video un messaggio.
+	 * @param msg messaggio da mostrare a video
+	 */
+	public void printMessage(String msg);
+	
+	/**
+	 * Questo metodo permette di mostrare il menu dell'applicaizone
+	 */
+	public void printMenu();
+	
+	/**
+	 * Questo metodo permette di restituire la scelta fatta nel menu
+	 * @return
+	 */
+	public int getMenuChoice();
+	
+	/**
+	 * Questo metodo mi permette di mostrare i vari sottomenu di ogni tipo di account
+	 * @param accountType
+	 */
+	public int showSubMenu(AccountType accountType);
+	
+	/**
+	 *  Sottomenu di donor con al suo interno le funzioni che puo effettuare
+	 */
+	public void donorMenu();
+	
+	/**
+	 *  Sottomenu di avisOffice con al suo interno le funzioni che puo effettuare
+	 */
+	public void avisOfficeMenu();
+	
+	/**
+	 *  Sottomenu di emergencyRoom con al suo interno le funzioni che puo effettuare
+	 */
+	public void emergencyRoomMenu();
 	
 	//----------------------------------------------------------
 	//------------------------- MESSAGE ------------------------
@@ -189,6 +234,18 @@ public interface ViewInterface {
 	 * @param listAvaiableDateAndHour
 	 */
 	public void showListAvaiableDateAndHour(List<AvaiableDateAndHours> listAvaiableDateAndHour);
+
+	/**
+	 * Questo metodo permette di inserire il nome dell'utente
+	 * @return
+	 */
+	public String getName();
+
+	/**
+	 * Questo metodo permetti di inserire il cognome dell'utente
+	 * @return
+	 */
+	public String getSurname();
 
 
 

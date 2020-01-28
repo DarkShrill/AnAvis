@@ -31,7 +31,7 @@ public interface NetworkInterface<T extends Account> {
 	public boolean sendRequest(T account);
 
 	/**
-	 * Questo metodo verifica la validità delle credenziali inserite e autentica
+	 * Questo metodo verifica la validitï¿½ delle credenziali inserite e autentica
 	 * l'utente
 	 * 
 	 * @return true se l'utente viene autenticato, false altrimenti
@@ -118,5 +118,49 @@ public interface NetworkInterface<T extends Account> {
 	 */
 	public boolean sendModifyAvaiableDateAndHours(String site, List<AvaiableDateAndHours> list, int indexData,
 			int indexHour, String date, String hours);
+	
+	/**
+	 * Questo metodo permette di ritornare il nome dell'utente data una specifica Email
+	 * @param Email
+	 * @return
+	 */
+	public String getNameFromEmail(String Email);
+	
+	/**
+	 * Questo metodo permette di ritornare il cognome dell'utente data una specifica Email
+	 * @param Email
+	 * @return
+	 */
+	public String getSurnameFromEmail(String Email);
+
+	
+	/**
+	 * Questo metodo permette di ritornare da una specifica email, se l'utente ha abilitato o meno 
+	 * la richiesta di "CARENZA SANGUE"
+	 * @param email
+	 * @return
+	 */
+	public boolean getEnableToEmergencyRequest(String email);
+
+	/**
+	 * Questo metodo permette di ritornare da una specifica email, la residenza dell'utente
+	 * @param email
+	 * @return
+	 */
+	public String getResidence(String email);
+
+	/**
+	 * Questo metodo permette di ritornare da una specifica email, il sesso dell'utente
+	 * @param email
+	 * @return
+	 */
+	public char getGender(String email);
+
+	/**
+	 * Questo metodo permette di ritornare da una specifica email, la sede avis
+	 * @param email
+	 * @return
+	 */
+	public String getSite(String email);
 
 }
