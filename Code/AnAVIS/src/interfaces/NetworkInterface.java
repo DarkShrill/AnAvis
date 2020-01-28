@@ -120,47 +120,12 @@ public interface NetworkInterface<T extends Account> {
 			int indexHour, String date, String hours);
 	
 	/**
-	 * Questo metodo permette di ritornare il nome dell'utente data una specifica Email
-	 * @param Email
+	 * Questo metodo permette di restituire i dati relativi a un determinato account
+	 * @param email
 	 * @return
 	 */
-	public String getNameFromEmail(String Email);
+	public Account getAccountData(AccountType account, String email);
 	
-	/**
-	 * Questo metodo permette di ritornare il cognome dell'utente data una specifica Email
-	 * @param Email
-	 * @return
-	 */
-	public String getSurnameFromEmail(String Email);
-
 	
-	/**
-	 * Questo metodo permette di ritornare da una specifica email, se l'utente ha abilitato o meno 
-	 * la richiesta di "CARENZA SANGUE"
-	 * @param email
-	 * @return
-	 */
-	public boolean getEnableToEmergencyRequest(String email);
-
-	/**
-	 * Questo metodo permette di ritornare da una specifica email, la residenza dell'utente
-	 * @param email
-	 * @return
-	 */
-	public String getResidence(String email);
-
-	/**
-	 * Questo metodo permette di ritornare da una specifica email, il sesso dell'utente
-	 * @param email
-	 * @return
-	 */
-	public char getGender(String email);
-
-	/**
-	 * Questo metodo permette di ritornare da una specifica email, la sede avis
-	 * @param email
-	 * @return
-	 */
-	public String getSite(String email);
 
 }

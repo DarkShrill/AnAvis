@@ -413,7 +413,6 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 			return false;
 
 		String dateId = "";
-		String hourId = "";
 
 		if (date.equals("") == false) {
 
@@ -469,40 +468,71 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 		return false;
 	}
 
+	@SuppressWarnings("resource")
 	@Override
-	public String getNameFromEmail(String Email) {
-		// TODO Auto-generated method stub
+	public Account getAccountData(AccountType accountType, String email) {
+
+		String query = null;
+		PreparedStatement pstmt;
+		ResultSet result;
+
+		try {
+
+			switch (accountType) {
+			case DOCTOR:
+				return null;
+			case DONOR:
+				query = "SELECT * FROM donatore WHERE email = '" + email + "'";
+
+				pstmt = connection.prepareStatement(query);
+				result = pstmt.executeQuery();
+
+				while (result.next()) {
+					return new Donor(result.getString("nome"), result.getString("cognome"), result.getString("email"),
+							"", result.getString("gruppo_sanguigno"),
+							result.getString("disponibilita").equals("0") ? false : true, null, null,
+							result.getString("citta"), result.getString("sesso").charAt(0));
+				}
+
+				pstmt.close();
+				result.close();
+				return null;
+			case AVIS_OFFICE:
+				query = "SELECT * FROM sede_avis WHERE email = '" + email + "'";
+
+				pstmt = connection.prepareStatement(query);
+				result = pstmt.executeQuery();
+
+				while (result.next()) {
+					return new AvisOffice(result.getString("email"), "", result.getString("nome_sede"), null, null);
+				}
+
+				pstmt.close();
+				result.close();
+				return null;
+			case EMERGENCY_ROOM:
+				query = "SELECT * FROM pronto_soccorso WHERE email = '" + email + "'";
+
+				pstmt = connection.prepareStatement(query);
+				result = pstmt.executeQuery();
+
+				while (result.next()) {
+					return new EmergencyRoom(result.getString("email"), "", result.getString("nome_sede"), null, null);
+				}
+
+				pstmt.close();
+				result.close();
+				return null;
+			default:
+				break;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+			return null;
+		}
+
 		return null;
 	}
-
-	@Override
-	public String getSurnameFromEmail(String Email) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean getEnableToEmergencyRequest(String email) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public String getResidence(String email) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public char getGender(String email) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String getSite(String email) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

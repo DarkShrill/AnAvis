@@ -52,14 +52,6 @@ public class EmergencyRoom implements Account {
 	private ViewInterface view;
 
 
-	public EmergencyRoom() {
-		this.accountType = AccountType.EMERGENCY_ROOM;
-		this.accountToString = "PRONTO SOCCORSO";
-		this.email = null;
-		this.password = null;
-		this.site = null;
-	}
-
 	public EmergencyRoom(String email, String password, String site, ViewInterface view, NetworkInterface<?> network) {
 		this.accountType = AccountType.EMERGENCY_ROOM;
 		this.accountToString = "PRONTO SOCCORSO";
