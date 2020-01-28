@@ -1,6 +1,8 @@
 package anAvis;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import interfaces.Account;
 import interfaces.AccountType;
@@ -26,6 +28,15 @@ public class Donor implements Account {
 	 * Tipo di account sotto forma di stringa
 	 */
 	private String accountToString;
+	/**
+	 * Nome del donatore
+	 */
+	private String name;
+	
+	/**
+	 * Cognome del donatore
+	 */
+	private String surname;
 
 	/**
 	 * Email
@@ -67,27 +78,12 @@ public class Donor implements Account {
 	 */
 	private ViewInterface view;
 
-
-	/**
-	 * Costruttore
-	 */
-	public Donor() {
-		this.accountType = AccountType.DONOR;
-		this.accountToString = "DONOR";
-		this.email = null;
-		this.password = null;
-		this.bloodGroup = null;
-		this.enableToEmergencyRequest = false;
-		this.residence = null;
-	}
-
-	/**
-	 * Costruttore
-	 */
-	public Donor(String email, String password, String bloodGroup, boolean enableToEmergencyRequest, 
+	public Donor(String name, String surname, String email, String password, String bloodGroup, boolean enableToEmergencyRequest, 
 			NetworkInterface<?> network, ViewInterface view, String residence, char gender) {
 		this.accountType = AccountType.DONOR;
 		this.accountToString = "DONOR";
+		this.name = name;
+		this.surname = surname;
 		this.email = email;
 		this.password = password;
 		this.bloodGroup = bloodGroup;
@@ -114,20 +110,31 @@ public class Donor implements Account {
 			return false;
 		}
 		
-		List<AvisOffice> list = network.getAvisOffices();
+		List<String> list = network.getAvisOffices();
 		view.printList(list);
 		
 		int avisOffice = view.getAvisOffice();
 		
-		String date = view.selectAvisOfficeDates(network.getAvisOfficesAviableDates(list.get(avisOffice)));
+		HashMap<String, String> dates = network.getAvisOfficesAviableDates(list.get(avisOffice));
+		String date = view.selectAvisOfficeDate((List<String>) dates.values());
+		
+		String id = "";
+		for(Entry<String, String> val : dates.entrySet()) {
+			if(val.getValue().equals(date)) {
+				id = val.getKey();
+				break;
+			}
+		}
+		
+		String hour = view.selectAvisOfficeHour(network.getAvisOfficesAviableHours(id));
 		
 		if (!this.view.getConfirmation()) {
 			return false;
 		}
 		
-		Reservation reservation = new Reservation(list.get(avisOffice).getSite(), date.split(" ")[0], date.split(" ")[1]);
+		Reservation reservation = new Reservation(list.get(avisOffice), date, hour);
 		reservation.setForm(f);
-		return network.saveReservation(reservation);
+		return network.saveReservation(reservation, this);
 	}
 	
 	
@@ -236,6 +243,28 @@ public class Donor implements Account {
 	public char getGender() {
 		return this.gender;
 	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public String getSurname() {
+		return surname;
+	}
+
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+	
+	
 
 
 }

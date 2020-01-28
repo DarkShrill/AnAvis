@@ -125,12 +125,6 @@ public class Console implements ViewInterface {
 	}
 
 	@Override
-	public String selectAvisOfficeDates(List<String> list) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean doYouWantAddNewAvaiableDate() {
 		// TODO Auto-generated method stub
 		return false;
@@ -194,6 +188,18 @@ public class Console implements ViewInterface {
 	public void showListAvaiableDateAndHour(List<AvaiableDateAndHours> listAvaiableDateAndHour) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public String selectAvisOfficeDate(List<String> list) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String selectAvisOfficeHour(List<String> list) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

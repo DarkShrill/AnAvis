@@ -37,7 +37,7 @@ public class EmergencyRoom implements Account {
 	private String password;
 	
 	/**
-	 * Password
+	 * nome del pronto soccorso
 	 */
 	private String site;
 	
@@ -78,9 +78,9 @@ public class EmergencyRoom implements Account {
 
 	 * @return true se l'operazione è andata a buon fine, false altrimenti
 	 */
-	public boolean bloodEmergencyRequest() {
+	public boolean bloodEmergencyRequest(String bloodGroup) {
 		
-		List<Donor> emergencyDonorList = this.network.getEmergencyDonorList();
+		List<Donor> emergencyDonorList = this.network.getEmergencyDonorList(this, bloodGroup);
 		
 		if (emergencyDonorList == null) {
 			// SE QUALCOSA E' ANDATO STORTO

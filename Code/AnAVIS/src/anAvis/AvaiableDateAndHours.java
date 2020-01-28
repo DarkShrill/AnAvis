@@ -1,6 +1,3 @@
-/**
- * 
- */
 package anAvis;
 
  import java.util.List;
@@ -8,7 +5,7 @@ package anAvis;
 /**
  * @author edoardo
  *
- *	Questa classe per mette di memorizzare una data disponibile per la prenotazione e memorizza gli orari disponibili per
+ *	Questa classe permette di memorizzare una data disponibile per la prenotazione e memorizza gli orari disponibili per
  *		quella specifica data.
  */
 public class AvaiableDateAndHours {

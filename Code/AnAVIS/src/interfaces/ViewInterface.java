@@ -108,9 +108,14 @@ public interface ViewInterface {
 	public int getAvisOffice();
 	
 	/**
-	 * Questo metodo permette di restituire una sede Avis selezionata
+	 * Questo metodo permette di restituire una data selezionata per la sede avis
 	 */
-	public String selectAvisOfficeDates(List<String> list);
+	public String selectAvisOfficeDate(List<String> list);
+	
+	/**
+	 * Questo metodo permette di restituire un orario per la sede avis
+	 */
+	public String selectAvisOfficeHour(List<String> list);
 
 	/**
 	 * 	Questo metodo chiede all'utente se vuole inserire un nuovo orario/data.

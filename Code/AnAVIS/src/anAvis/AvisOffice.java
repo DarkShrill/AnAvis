@@ -1,4 +1,5 @@
 package anAvis;
+
 import interfaces.Account;
 import interfaces.AccountType;
 import interfaces.NetworkInterface;
@@ -40,21 +41,10 @@ public class AvisOffice implements Account {
 	 * Sede
 	 */
 	private String site;
-	
-	
-	NetworkInterface<?> network;
-	
-	ViewInterface view;
-	
-	
 
-	public AvisOffice() {
-		this.accountType = AccountType.AVIS_OFFICE;
-		this.accountToString = "SEDE AVIS";
-		this.email = null;
-		this.password = null;
-		this.site = null;
-	}
+	NetworkInterface<?> network;
+
+	ViewInterface view;
 
 	public AvisOffice(String email, String password, String sede, NetworkInterface<?> network, ViewInterface view) {
 		this.accountType = AccountType.AVIS_OFFICE;
@@ -65,52 +55,48 @@ public class AvisOffice implements Account {
 		this.network = network;
 		this.view = view;
 	}
-	
+
 	/**
-	 * Questo metodo permette di inserire delle date, con i relativi orari, in cui è
-	 * 	possibile effettuare delle donazioni presso una specifica sede.
+	 * Questo metodo permette di inserire delle date, con i relativi orari, in cui
+	 * è possibile effettuare delle donazioni presso una specifica sede.
 	 */
 	public void insertAvaibleDatesAndHours() {
-		
+
 		boolean wantExit = false;
 		String date;
 		String hours;
 		boolean correctHours;
 		List<AvaiableDateAndHours> listAvaiableDateAndHour = new ArrayList<>();
-		
-		
-		
-		
+
 		this.view.showMessageForInsertAvaiableDatesAndHours();
-		
-		while(!wantExit) {
-			
+
+		while (!wantExit) {
+
 			wantExit = !this.view.doYouWantAddNewAvaiableDate();
-			
-			if(!wantExit) {
-				
+
+			if (!wantExit) {
+
 				date = this.view.getAvaiableDate();
 				correctHours = false;
-				
-				
+
 				do {
 					hours = this.view.getAvaiableHours();
-				
+
 					correctHours = this.checkCorretHours(hours);
-					
-					if(!correctHours) {
+
+					if (!correctHours) {
 						this.view.showMessageForInsertCorrectHour();
 					}
-					
-				}while(!correctHours);
-				
+
+				} while (!correctHours);
+
 				AvaiableDateAndHours avaiableDateAndHours = new AvaiableDateAndHours(date, getListFromString(hours));
 				listAvaiableDateAndHour.add(avaiableDateAndHours);
-				
+
 			}
-			
+
 		}
-		
+
 		if (!this.view.getConfirmation()) {
 			// L'UTENTE HA ANNULLATO L'OPERAZIONE
 			this.accountType = null;
@@ -120,48 +106,45 @@ public class AvisOffice implements Account {
 			this.site = null;
 		}
 
-		if (!this.network.sendAvaiableDateAndHours(this.site,listAvaiableDateAndHour)) {
+		if (!this.network.sendAvaiableDateAndHours(this.site, listAvaiableDateAndHour)) {
 			// SE QUALCOSA E' ANDATO STORTO
 			this.view.showRepeatOperationMessage();
 			this.view.goToMainView();
 		}
-		
+
 	}
-	
+
 	public void modifyAvaibleDatesAndHours() {
-		
+
 		List<AvaiableDateAndHours> listAvaiableDateAndHour = new ArrayList<>();
 		int index = -1;
 		String date = "";
 		String hours = "";
 		boolean correctHours = false;
-		
-		
+
 		listAvaiableDateAndHour = this.network.getListAvaiableDateAndHours(this.site);
-		
+
 		this.view.showListAvaiableDateAndHour(listAvaiableDateAndHour);
-		
+
 		index = this.view.getSelectedAvaiableDateAndHour();
-		
-		if(this.view.getDateOrHours().contains("DATE")) {
+
+		if (this.view.getDateOrHours().contains("DATE")) {
 			// MODIFICA DELLA DATA
 			date = this.view.getAvaiableDate();
-		}
-		else {
-			//MODIFICA DEGLI ORARI
+		} else {
+			// MODIFICA DEGLI ORARI
 			do {
 				hours = this.view.getAvaiableHours();
-			
+
 				correctHours = this.checkCorretHours(hours);
-				
-				if(!correctHours) {
+
+				if (!correctHours) {
 					this.view.showMessageForInsertCorrectHour();
 				}
-				
-			}while(!correctHours);
+
+			} while (!correctHours);
 		}
-		
-		
+
 		if (!this.view.getConfirmation()) {
 			// L'UTENTE HA ANNULLATO L'OPERAZIONE
 			this.accountType = null;
@@ -171,73 +154,67 @@ public class AvisOffice implements Account {
 			this.site = null;
 		}
 
-		if (!this.network.sendModifyAvaiableDateAndHours(this.site,index,date,hours)) {
+		if (!this.network.sendModifyAvaiableDateAndHours(this.site, listAvaiableDateAndHour, index, date, hours)) {
 			// SE QUALCOSA E' ANDATO STORTO
 			this.view.showRepeatOperationMessage();
 			this.view.goToMainView();
 		}
-		
+
 	}
 
-
-	private List<String> getListFromString(String str){
+	private List<String> getListFromString(String str) {
 		String[] strList = str.split(",");
 		List<String> list = new ArrayList<String>();
-		
+
 		for (String s : strList) {
 			list.add(s);
 		}
 		return list;
 	}
-	
+
 	/**
-	 * Questo metodo permette di verificare se le date inserite sono corrette secondo il formato HH:MM
-	 * @param hours
-	 * true -> se le date sono tutte corrette.
-	 * false -> se è presente almeno una date non corretta.
+	 * Questo metodo permette di verificare se le date inserite sono corrette
+	 * secondo il formato HH:MM
+	 * 
+	 * @param hours true -> se le date sono tutte corrette. false -> se è presente
+	 *              almeno una date non corretta.
 	 * 
 	 * @return boolean
 	 */
 	private boolean checkCorretHours(String hours) {
 		String[] strList = hours.split(",");
-		
+
 		for (String str : strList) {
-			//DEVE ESSERE LUNGO 5 PERCHE COMPOSTO COSI : HH:MM
-			if(str.length() != 5) {
+			// DEVE ESSERE LUNGO 5 PERCHE COMPOSTO COSI : HH:MM
+			if (str.length() != 5) {
 				return false;
 			}
-			
+
 			char hourL = str.charAt(0);
 			char hourR = str.charAt(1);
-			
-			if(hourL > 2) {
+
+			if (hourL > 2) {
 				return false;
 			}
-			if((hourL == 2) && (hourR > 4)) {
+			if ((hourL == 2) && (hourR > 4)) {
 				return false;
 			}
-			
+
 			char minuteL = str.charAt(3);
 			char minuteR = str.charAt(4);
-			
-			if(minuteL > 6) {
+
+			if (minuteL > 6) {
 				return false;
 			}
-			if((minuteL == 6) && (minuteR >=0)) {
+			if ((minuteL == 6) && (minuteR >= 0)) {
 				return false;
 			}
-			
+
 		}
-		
+
 		return true;
 	}
 
-	public void setDateAndHourForBookingDay(int Year,int Month, int Day, int HourStart,int MinuteStart,int HourEnd,int MinuteEnd) {
-		//RIVEDERE DOPO CHE MARICA CREA QUELLA CLASSE
-		//FARE ANCHE IL GET
-		//METTERE LA RICHIESTA ALL?INTERNO DI NETWORK INTERFACE?
-	}
-	
 	public String getSite() {
 		return site;
 	}
