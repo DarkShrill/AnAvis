@@ -4,14 +4,18 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Map.Entry;
 
 import anAvis.AvaiableDateAndHours;
 import anAvis.AvisOffice;
 import anAvis.Doctor;
 import anAvis.Donor;
 import anAvis.EmergencyRoom;
+import anAvis.Pair;
 import interfaces.AccountType;
 import interfaces.ViewInterface;
 
@@ -39,7 +43,7 @@ public class Console implements ViewInterface {
 		
 		
 		System.out.println("============================================================================================");
-		System.out.println("|  Perfavore inserisci il tipo di account che vuoi creare:       (Esempio : \"DONOR\")       |");
+		System.out.println("|  Per favore inserisci il tipo di account:       (Esempio : \"DONOR\")       |");
 		System.out.println("============================================================================================");
 		System.out.println("|               Opzioni :                                                                  |");
 		System.out.println("|                   - DONOR                                                                |");
@@ -69,17 +73,18 @@ public class Console implements ViewInterface {
 				correctInput = true;
 			}
 			else {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 			}
 		}while(!correctInput);
 		
+		//scanner.close();;
 		
 		return type;
 	}
 
 	@Override
 	public Object getDocument() {
-		System.out.println("####  Perfavore inserisci la cartificazione:");
+		System.out.println("####  Per favore inserisci la cartificazione:");
 		System.out.println("");
 		return new Object();
 	}
@@ -93,7 +98,7 @@ public class Console implements ViewInterface {
 		int input = -1;
 		
 		System.out.println("=========================================================================================================================");
-		System.out.println("| Perfavore inserisci il gruppo sanguigno di appartenenza tra i seguenti: (indicando il gruppo con il numero associato) |");
+		System.out.println("| Per favore inserisci il gruppo sanguigno di appartenenza tra i seguenti: (indicando il gruppo con il numero associato) |");
 		System.out.println("=========================================================================================================================");
 		System.out.println("|                         Opzioni :                                                                                     |");
 		System.out.println("|                              - 1) 0+                                                                                  |");
@@ -154,12 +159,14 @@ public class Console implements ViewInterface {
 				break;
 
 			default:
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 				break;
 			}
 
 		}while(!correctInput);
+		
+		//scanner.close();;
 		
 		return bloodGroup;
 	}
@@ -172,7 +179,7 @@ public class Console implements ViewInterface {
 		Scanner scanner = new Scanner(System.in);
 		
 		System.out.println("####  Acconsenti a ricevere chiamate/messaggi nel caso in cui il pronto soccorso abbia una CARENZA SANGUE ?");
-		System.out.println("####  		Perfavore rispondi \"" + ANSI_GREEN + "SI" + ANSI_RESET +"\" oppure \"" + ANSI_RED + "NO" + ANSI_RESET+"\"");
+		System.out.println("####  		Per favore rispondi \"" + ANSI_GREEN + "SI" + ANSI_RESET +"\" oppure \"" + ANSI_RED + "NO" + ANSI_RESET+"\"");
 		System.out.println("");
 		do {
 			System.out.println("#### Inserisci la tua scelta : ");
@@ -184,13 +191,15 @@ public class Console implements ViewInterface {
 				correctInput = true;
 			}else {
 				correctInput= false;
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 			}
 
 
 		}while(!correctInput);
 		
 		enable = input.compareTo("SI") == 0 ? true : false;
+		
+		//scanner.close();;
 		
 		return enable;
 	}
@@ -201,7 +210,7 @@ public class Console implements ViewInterface {
 		String input = "";
 		Scanner scanner = new Scanner(System.in);
 		
-		System.out.println("####  Perfavore, inserisci il nome della sede: ");
+		System.out.println("####  Per favore, inserisci il nome della sede: ");
 		System.out.println("");
 		do {
 			System.out.println("#### Inserisci la tua scelta : ");
@@ -209,13 +218,15 @@ public class Console implements ViewInterface {
 			
 			if(input.compareTo("") == 0) {
 				correctInput = false;
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 			}else {
 				correctInput = true;
 			}
 			
 
 		}while(!correctInput);
+		
+		//scanner.close();;
 		
 		return input;
 	}
@@ -228,7 +239,7 @@ public class Console implements ViewInterface {
 		Scanner scanner = new Scanner(System.in);
 		
 		System.out.println("####  Vuoi davvero confermare ?");
-		System.out.println("####  		Perfavore rispondi \"" + ANSI_GREEN + "SI" + ANSI_RESET +"\" oppure \"" + ANSI_RED + "NO" + ANSI_RESET+"\"");
+		System.out.println("####  		Per favore rispondi \"" + ANSI_GREEN + "SI" + ANSI_RESET +"\" oppure \"" + ANSI_RED + "NO" + ANSI_RESET+"\"");
 		System.out.println("");
 		do {
 			System.out.println("#### Inserisci la tua scelta : ");
@@ -240,13 +251,15 @@ public class Console implements ViewInterface {
 				correctInput = true;
 			}else {
 				correctInput= false;
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 			}
 
 
 		}while(!correctInput);
 		
 		enable = input.compareTo("SI") == 0 ? true : false;
+		
+		//scanner.close();;
 		
 		return enable;
 	}
@@ -255,24 +268,27 @@ public class Console implements ViewInterface {
 	public String getEmail() {
 		boolean correctInput = false;
 		String email = "";
+		String input="";
 		Scanner scanner = new Scanner(System.in);
 		
-		System.out.println("####  Perfavore inserisci l'email:      (Esempio : \"esempio@host.it\")");
+		System.out.println("####  Per favore inserisci l'email:      (Esempio : \"esempio@host.it\")");
 		System.out.println("");
 		
 		do {
 			System.out.println("#### Inserisci la tua scelta : ");
-			String input = scanner.nextLine().toUpperCase();
+			
+			input = scanner.nextLine();
 			
 			if(input.compareTo("") != 0) {
 				correctInput = true;
 				email = input;
 			}else {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 			}
 		}while(!correctInput);
 		
+		//scanner.close();;
 		
 		return email;
 	}
@@ -283,7 +299,7 @@ public class Console implements ViewInterface {
 		String password = "";
 		Scanner scanner = new Scanner(System.in);
 		
-		System.out.println("####  Perfavore inserisci la password:      (Esempio : \"dario04\")");
+		System.out.println("####  Per favore inserisci la password:      (Esempio : \"dario04\")");
 		System.out.println("");
 		
 		do {
@@ -294,11 +310,12 @@ public class Console implements ViewInterface {
 			if(password.compareTo("") != 0) {
 				correctInput = true;
 			}else {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 			}
 		}while(!correctInput);
 		
+		//scanner.close();;
 		
 		return password;
 	}
@@ -309,7 +326,7 @@ public class Console implements ViewInterface {
 		String residence = "";
 		Scanner scanner = new Scanner(System.in);
 		
-		System.out.println("####  Perfavore inserisci la residenza:      (Esempio : \"via pippo n3\")");
+		System.out.println("####  Per favore inserisci la residenza:      (Esempio : \"via pippo n3\")");
 		System.out.println("");
 		
 		do {
@@ -320,11 +337,12 @@ public class Console implements ViewInterface {
 				correctInput = true;
 				residence = input;
 			}else {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 			}
 		}while(!correctInput);
 		
+		//scanner.close();;
 		
 		return residence;
 	}
@@ -336,8 +354,8 @@ public class Console implements ViewInterface {
 		String input = "";
 		Scanner scanner = new Scanner(System.in);
 		
-		System.out.println("####  Perfavore, inserisci il sesso: ?");
-		System.out.println("####  		Perfavore rispondi \"" + ANSI_BLUE + "M"+ ANSI_RESET +"\" se si vuole sceglie maschio, oppure \"" + ANSI_PURPLE + "F" + ANSI_RESET + "\" se si vuole scegliere femmina");
+		System.out.println("####  Per favore, inserisci il sesso: ?");
+		System.out.println("####  		Per favore rispondi \"" + ANSI_BLUE + "M"+ ANSI_RESET +"\" se si vuole sceglie maschio, oppure \"" + ANSI_PURPLE + "F" + ANSI_RESET + "\" se si vuole scegliere femmina");
 		System.out.println("");
 		do {
 			System.out.println("#### Inserisci la tua scelta : ");
@@ -349,13 +367,15 @@ public class Console implements ViewInterface {
 				correctInput = true;
 			}else {
 				correctInput= false;
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 			}
 
 
 		}while(!correctInput);
 		
 		sesso = input.compareTo("F") == 0 ? 'F' : 'M';
+		
+		//scanner.close();;
 		
 		return sesso;
 	}
@@ -364,11 +384,11 @@ public class Console implements ViewInterface {
 	public void printList(List<?> list) {
 		System.out.println("####  LISTA : ");
 		System.out.println("");
-		Scanner scanner = new Scanner(System.in);
 		
 		for(int i = 0; i < list.size(); i++) {
 			System.out.println(" " + i + ")  " + list.get(i));
 		}
+		
 	}
 
 	@Override
@@ -377,7 +397,7 @@ public class Console implements ViewInterface {
 		String input = "";
 		Scanner scanner = new Scanner(System.in);
 		
-		System.out.println("####  Perfavore inserisci la sede avis:      (Esempio : \"Sede Avis Fermo\")");
+		System.out.println("####  Per favore inserisci la sede avis:      (Esempio : \"Sede Avis Fermo\")");
 		System.out.println("");
 		
 		do {
@@ -388,11 +408,12 @@ public class Console implements ViewInterface {
 			if(input.compareTo("") != 0) {
 				correctInput = true;
 			}else {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 			}
 		}while(!correctInput);
 		
+		//scanner.close();;
 		
 		return Integer.parseInt(input);
 	}
@@ -417,14 +438,14 @@ public class Console implements ViewInterface {
 //			input = scanner.nextLine();
 //			
 //			if(input.compareTo("") != 0) {
-//				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+//				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 //				correctInput = false;
 //			}else {
 //				correctInput = true;
 //				choice = Integer.parseInt(input);
 //				if(choice > list.size() - 1) {
 //					correctInput = false;
-//					System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+//					System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 //				}
 //			}
 //		}while(!correctInput);
@@ -441,7 +462,7 @@ public class Console implements ViewInterface {
 		String input = "";
 		
 		System.out.println("####  Vuoi aggiungere una nuova data ?");
-		System.out.println("####  		Perfavore rispondi \"" + ANSI_GREEN + "SI" + ANSI_RESET +"\" oppure \"" + ANSI_RED + "NO" + ANSI_RESET+"\"");
+		System.out.println("####  		Per favore rispondi \"" + ANSI_GREEN + "SI" + ANSI_RESET +"\" oppure \"" + ANSI_RED + "NO" + ANSI_RESET+"\"");
 		System.out.println("");
 		do {
 			System.out.println("#### Inserisci la tua scelta : ");
@@ -453,7 +474,7 @@ public class Console implements ViewInterface {
 				correctInput = true;
 			}else {
 				correctInput= false;
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 			}
 
 
@@ -461,9 +482,11 @@ public class Console implements ViewInterface {
 		
 		enable = input.compareTo("SI") == 0 ? true : false;
 		
+		//scanner.close();;
+		
 		return enable;
 	}
-
+	
 	@Override
 	public String getAvaiableDate() {
 		boolean correctInput = false;
@@ -486,6 +509,7 @@ public class Console implements ViewInterface {
 			}
 		}while(!correctInput);
 		
+		//scanner.close();;
 		return input;
 	}
 
@@ -519,64 +543,163 @@ public class Console implements ViewInterface {
 		for (String s : strList) {
 			list.add(s);
 		}
+		//scanner.close();;
 		return list;
 	}
-	
-	@Override
-	public AvaiableDateAndHours getModifyHours(AvaiableDateAndHours avaiableDateAndHours) {
-		boolean correctInput = false;
-		int choice = -1;
-		String input = "";
-		Scanner scanner = new Scanner(System.in);
-		
-		System.out.println("####  Perfavore, inserisci l'orario che si desidera modificare: \n"
-				+ "			Si prega di inserire il numero associato all'orario scelto");
-		System.out.println("");
-		
-		do {
-			System.out.println("#### Inserisci la tua scelta : ");
-			input = scanner.nextLine();
-			
-			if(input.compareTo("") != 0) {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
-				correctInput = false;
-			}else {
-				correctInput = true;
-				choice = Integer.parseInt(input);
-				if(choice > avaiableDateAndHours.getHours().size() - 1) {
-					correctInput = false;
-					System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
-				}
-			}
-		}while(!correctInput);
-		
-		avaiableDateAndHours.addIndexOfModifyHour(choice);
-		
-		System.out.println("####  Perfavore, inserisci l'orario modificato:");
-		System.out.println("");
-		
-		do {
-			System.out.println("#### Inserisci la tua scelta : ");
-			input = scanner.nextLine();
-			
-			if(input.compareTo("") != 0) {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
-				correctInput = false;
-			}else {
-				correctInput = true;
-			}
-		}while(!correctInput);
-		
-		List<String> tempList = avaiableDateAndHours.getHours();
-		
-		tempList.remove(choice);
-		
-		tempList.add(choice,input);
-		
-		avaiableDateAndHours.setHours(tempList);
 
-		return avaiableDateAndHours;
+	@Override
+	public Pair<Integer, String> getAvaiableDate(List<AvaiableDateAndHours> list, boolean isDate) {
+		boolean correctInput = false;
+		Scanner scanner = new Scanner(System.in);
+		int input = -1;
+		String newDate = "";
+		int counter = 0;
+		
+		for(AvaiableDateAndHours item : list) {
+			System.out.println( counter + ") " + item.getDate());
+			counter++;
+		}
+		
+		do {
+			System.out.println("#### Inserisci la tua scelta : ");
+			try {
+				input = scanner.nextInt();
+				if(input < 0 || input > counter) {
+					System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
+					correctInput = false;
+				}else {
+					correctInput = true;
+				}
+			} catch(InputMismatchException e) {
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
+				correctInput = false;
+			}
+		}while(!correctInput);
+		
+		if(!isDate) {
+			//scanner.close();;
+			return new Pair<Integer, String>(input, "");
+		}
+		
+		do {
+			System.out.println("#### Inserisci la nuova data : ");
+			newDate = scanner.nextLine();
+			
+			if(newDate.equals("")) {
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
+				correctInput = false;
+			} else {
+				correctInput = true;
+			}
+		}while(!correctInput);
+		
+		//scanner.close();;
+		return new Pair<Integer, String>(input, newDate);
 	}
+
+	@Override
+	public Pair<Integer, String> getAvaiableHours(List<AvaiableDateAndHours> list, int dateIndex) {
+		boolean correctInput = false;
+		int input = -1;
+		String newHour = "";
+		Scanner scanner = new Scanner(System.in);
+		int counter = 0;
+		
+		System.out.println("Data: " + list.get(dateIndex).getDate());
+		for(String item : list.get(dateIndex).getHours()) {
+			System.out.println( counter + ") " + item);
+			counter++;
+		}
+		
+		do {
+			System.out.println("#### Inserisci la tua scelta : ");
+			try {
+				input = scanner.nextInt();
+				if(input < 0 || input > counter) {
+					System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
+					correctInput = false;
+				}else {
+					correctInput = true;
+				}
+			} catch(InputMismatchException e) {
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
+				correctInput = false;
+			}
+			
+			do {
+				System.out.println("#### Inserisci il nuovo orario : ");
+				newHour = scanner.nextLine();
+				
+				if(newHour.equals("")) {
+					System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
+					correctInput = false;
+				} else {
+					correctInput = true;
+				}
+			}while(!correctInput);
+		}while(!correctInput);
+		
+		//scanner.close();;
+		return new Pair<Integer, String>(input, newHour);
+	}
+	
+//	@Override
+//	public AvaiableDateAndHours getModifyHours(AvaiableDateAndHours avaiableDateAndHours) {
+//		boolean correctInput = false;
+//		int choice = -1;
+//		String input = "";
+//		Scanner scanner = new Scanner(System.in);
+//		
+//		System.out.println("####  Per favore, inserisci l'orario che si desidera modificare: \n"
+//				+ "			Si prega di inserire il numero associato all'orario scelto");
+//		System.out.println("");
+//		
+//		do {
+//			System.out.println("#### Inserisci la tua scelta : ");
+//			input = scanner.nextLine();
+//			
+//			if(input.compareTo("") != 0) {
+//				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
+//				correctInput = false;
+//			}else {
+//				correctInput = true;
+//				choice = Integer.parseInt(input);
+//				if(choice > avaiableDateAndHours.getHours().size() - 1) {
+//					correctInput = false;
+//					System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
+//				}
+//			}
+//		}while(!correctInput);
+//		
+//		avaiableDateAndHours.addIndexOfModifyHour(choice);
+//		
+//		System.out.println("####  Per favore, inserisci l'orario modificato:");
+//		System.out.println("");
+//		
+//		do {
+//			System.out.println("#### Inserisci la tua scelta : ");
+//			input = scanner.nextLine();
+//			
+//			if(input.compareTo("") != 0) {
+//				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
+//				correctInput = false;
+//			}else {
+//				correctInput = true;
+//			}
+//		}while(!correctInput);
+//		
+//		List<String> tempList = avaiableDateAndHours.getHours();
+//		
+//		tempList.remove(choice);
+//		
+//		tempList.add(choice,input);
+//		
+//		avaiableDateAndHours.setHours(tempList);
+//
+//		//scanner.close();;
+//		
+//		return avaiableDateAndHours;
+//	}
 	
 	@Override
 	public void goToMainView() {
@@ -605,11 +728,12 @@ public class Console implements ViewInterface {
 			if(input.compareTo("") != 0) {
 				correctInput = true;
 			}else {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 			}
 		}while(!correctInput);
 		
+		//scanner.close();;
 		
 		return Integer.parseInt(input);
 	}
@@ -617,11 +741,10 @@ public class Console implements ViewInterface {
 	@Override
 	public String getDateOrHours() {
 		boolean correctInput = false;
-		int choice = -1;
 		Scanner scanner = new Scanner(System.in);
 		String input = "";
 		
-		System.out.println("####  Perfavore, scegli tra \"DATA\" o \"ORARIO\":      ");
+		System.out.println("####  Per favore, scegli tra \"DATA\" o \"ORARIO\":      ");
 		System.out.println("");
 		
 		do {
@@ -633,11 +756,13 @@ public class Console implements ViewInterface {
 			}else if(input.compareTo("ORARIO") == 0) {
 				correctInput = true;
 			}else {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 			}
 
 		}while(!correctInput);
+		
+		//scanner.close();;
 		
 		return input;
 	}
@@ -645,35 +770,24 @@ public class Console implements ViewInterface {
 	@Override
 	public void showRepeatOperationMessage() {
 		System.out.println( ANSI_RED + "####  Qualcosa è andato storto...");
-		System.out.println("###      Perfavore, ripeti l'operazione! "+ ANSI_RESET);
+		System.out.println("###      Per favore, ripeti l'operazione! "+ ANSI_RESET);
 	}
 
 	@Override
 	public void showCredentialsErrorMessage() {
 		System.out.println( ANSI_RED + "####  Qualcosa è andato storto, credenziali sbagliate!");
-		System.out.println("###      Perfavore, ripeti le credenziali! "+ ANSI_RESET);
+		System.out.println("###      Per favore, ripeti le credenziali! "+ ANSI_RESET);
 	}
 
 	@Override
 	public void showMessageForInsertAvaiableDatesAndHours() {
-		System.out.println("####  Perfavore, inserisci una data e almeno un orario disponibile per una prenotazione!");
+		System.out.println("####  Per favore, inserisci una data e almeno un orario disponibile per una prenotazione!");
 	}
 
 	@Override
 	public void showMessageForInsertCorrectHour() {
 		System.out.println( ANSI_RED + "####  Qualcosa è andato storto, orario sbagliate!");
 		System.out.println("###      Perfavore, riinserisci l'orario! "+ ANSI_RESET);
-	}
-
-	@Override
-	public void showListAvaiableDateAndHour(List<AvaiableDateAndHours> listAvaiableDateAndHour) {
-		System.out.println("####  Perfavore, scegli una tra le seguenti: ");
-		for(int i = 0; i < listAvaiableDateAndHour.size(); i++) {
-			System.out.println(ANSI_RED + " " + i + ")  " + listAvaiableDateAndHour.get(i).getDate() + " : " + ANSI_RESET);
-			for(int j = 0; j < listAvaiableDateAndHour.size(); j++) {
-				System.out.println(ANSI_CYAN + " " + j + ")  " + listAvaiableDateAndHour.get(i).getHours().get(j) + ANSI_RESET);
-			}
-		}
 	}
 
 	@Override
@@ -706,7 +820,7 @@ public class Console implements ViewInterface {
 			}else if(input.compareTo("2") == 0) {
 				correctInput = true;
 			}else {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 			}
 
@@ -740,7 +854,7 @@ public class Console implements ViewInterface {
 			}else if(input.compareTo("2") == 0) {
 				correctInput = true;
 			}else {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 			}
 
@@ -797,14 +911,14 @@ public class Console implements ViewInterface {
 			input = scanner.nextLine();
 			
 			if(input.compareTo("") != 0) {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 			}else {
 				correctInput = true;
 				choice = Integer.parseInt(input);
 				if(choice > list.size() - 1) {
 					correctInput = false;
-					System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+					System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				}
 			}
 		}while(!correctInput);
@@ -832,14 +946,14 @@ public class Console implements ViewInterface {
 			input = scanner.nextLine();
 			
 			if(input.compareTo("") != 0) {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 			}else {
 				correctInput = true;
 				choice = Integer.parseInt(input);
 				if(choice > list.size() - 1) {
 					correctInput = false;
-					System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+					System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				}
 			}
 		}while(!correctInput);
@@ -853,7 +967,7 @@ public class Console implements ViewInterface {
 		Scanner scanner = new Scanner(System.in);
 		String input = "";
 		
-		System.out.println("####  Perfavore,inserisci un nome : ");
+		System.out.println("####  Per favore,inserisci un nome : ");
 		System.out.println("");
 		
 		do {
@@ -863,7 +977,7 @@ public class Console implements ViewInterface {
 			if(input.compareTo("") != 0) {
 				correctInput = true;
 			}else {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 			}
 
@@ -878,7 +992,7 @@ public class Console implements ViewInterface {
 		Scanner scanner = new Scanner(System.in);
 		String input = "";
 		
-		System.out.println("####  Perfavore,inserisci un cognome : ");
+		System.out.println("####  Per favore,inserisci un cognome : ");
 		System.out.println("");
 		
 		do {
@@ -888,13 +1002,19 @@ public class Console implements ViewInterface {
 			if(input.compareTo("") != 0) {
 				correctInput = true;
 			}else {
-				System.out.println( ANSI_RED + "####  Perfavore, inserisci il campo correttamente! " + ANSI_RESET);
+				System.out.println( ANSI_RED + "####  Per favore, inserisci il campo correttamente! " + ANSI_RESET);
 				correctInput = false;
 			}
 
 		}while(!correctInput);
 		
 		return input;
+	}
+
+	@Override
+	public AvaiableDateAndHours getModifyHours(AvaiableDateAndHours avaiableDateAndHours) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

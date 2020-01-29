@@ -17,6 +17,7 @@ public class Main {
 	/**
 	 * @param args
 	 */
+	@SuppressWarnings("null")
 	public static void main(String[] args) {
 		
 		
@@ -34,10 +35,10 @@ public class Main {
 		EmergencyRoom emergency;
 		AvisOffice avisSite = null;
 		
-		
+		network = new Network();
 		view = new Console();
 		unUsr = new UnregisteredUser(view, network);
-	
+		
 
 		//--------------------------------------------------------------
 		
@@ -61,14 +62,13 @@ public class Main {
 			//SONO LOGGATO
 			
 			if (accountType == AccountType.DOCTOR) {
-				doctor = new Doctor(email,password, new Object());
+				doctor = network.getAccountData(accountType, email);
 			} else if (accountType == AccountType.DONOR) {
-				donor = new Donor(network.getNameFromEmail(email),network.getSurnameFromEmail(email),email,password,view.getBloodGroup(),
-						network.getEnableToEmergencyRequest(email),network,view, network.getResidence(email), network.getGender(email));
+				donor = network.getAccountData(accountType, email);
 			} else if (accountType == AccountType.EMERGENCY_ROOM) {
-				emergency = new EmergencyRoom(email, password, network.getSite(email), view, network);
+				emergency = network.getAccountData(accountType, email);
 			} else if (accountType == AccountType.AVIS_OFFICE) {
-				avisSite = new AvisOffice(email, password, network.getSite(email),network,view);
+				avisSite = network.getAccountData(accountType, email);
 			}
 			
 			choice = view.showSubMenu(accountType);

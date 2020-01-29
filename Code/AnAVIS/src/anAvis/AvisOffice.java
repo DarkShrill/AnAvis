@@ -1,11 +1,13 @@
 package anAvis;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import interfaces.Account;
 import interfaces.AccountType;
 import interfaces.NetworkInterface;
 import interfaces.ViewInterface;
-
-import java.util.*;
 
 /**
  * 
@@ -115,40 +117,32 @@ public class AvisOffice implements Account {
 	}
 
 	public void modifyAvaibleDatesAndHours() {
-
 		List<AvaiableDateAndHours> listAvaiableDateAndHour = new ArrayList<>();
-		int index = -1;
-		String date = "";
-		List<String> hours;
+		Pair<Integer, String> date = null;
+		Pair<Integer, String> hour = null;
 		boolean correctHours = false;
-		AvaiableDateAndHours tempAvaiableDateAndHours;
 
 		listAvaiableDateAndHour = this.network.getListAvaiableDateAndHours(this.site);
 
-		this.view.showListAvaiableDateAndHour(listAvaiableDateAndHour);
-
-		index = this.view.getSelectedAvaiableDateAndHour();
-
 		if (this.view.getDateOrHours().contains("DATE")) {
 			// MODIFICA DELLA DATA
-			date = this.view.getAvaiableDate();
-			hours = this.network.getAvisOfficesAviableHours(date);
+			date = this.view.getAvaiableDate(listAvaiableDateAndHour, true);
 		} else {
 			// MODIFICA DEGLI ORARI
 			do {
-				date = listAvaiableDateAndHour.get(index).getDate();
-				tempAvaiableDateAndHours = this.view.getModifyHours(listAvaiableDateAndHour.get(index));
+				date = this.view.getAvaiableDate(listAvaiableDateAndHour, false);
+				hour = this.view.getAvaiableHours(listAvaiableDateAndHour, date.getKey());
 
-				correctHours = this.checkCorretHours(tempAvaiableDateAndHours.getHours());
+				List<String> tmpHourList = new LinkedList<String>();
+				tmpHourList.add(hour.getValue());
+
+				correctHours = this.checkCorretHours(tmpHourList);
 
 				if (!correctHours) {
 					this.view.showMessageForInsertCorrectHour();
-				}else {
-					listAvaiableDateAndHour.remove(index);
-					listAvaiableDateAndHour.add(index,tempAvaiableDateAndHours);
+				} else {
+					tmpHourList.remove(0);
 				}
-				
-
 			} while (!correctHours);
 		}
 
@@ -160,27 +154,13 @@ public class AvisOffice implements Account {
 			this.password = null;
 			this.site = null;
 		}
-		
-		List<Integer> tempList = listAvaiableDateAndHour.get(index).getIndexOfModifyHour();
-		
-		for (Integer integer : tempList) {
-			if (!this.network.sendModifyAvaiableDateAndHours(this.site,listAvaiableDateAndHour,index,integer,date,listAvaiableDateAndHour.get(index).getHours().get(integer))) {
-				// SE QUALCOSA E' ANDATO STORTO
-				this.view.showRepeatOperationMessage();
-				this.view.goToMainView();
-			}
-		}
-		listAvaiableDateAndHour.get(index).clearIndexOfModifyHour();
-	}
 
-	private List<String> getListFromString(String str) {
-		String[] strList = str.split(",");
-		List<String> list = new ArrayList<String>();
-
-		for (String s : strList) {
-			list.add(s);
+		if (!this.network.sendModifyAvaiableDateAndHours(this.site, listAvaiableDateAndHour, date.getKey(),
+				hour == null ? -1 : hour.getKey(), date.getValue(), hour == null ? "" : hour.getValue())) {
+			// SE QUALCOSA E' ANDATO STORTO
+			this.view.showRepeatOperationMessage();
+			this.view.goToMainView();
 		}
-		return list;
 	}
 
 	/**
