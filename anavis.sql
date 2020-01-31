@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Gen 28, 2020 alle 20:16
--- Versione del server: 10.4.11-MariaDB
--- Versione PHP: 7.4.1
+-- Creato il: Gen 31, 2020 alle 01:16
+-- Versione del server: 10.1.37-MariaDB
+-- Versione PHP: 7.3.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -79,25 +79,23 @@ CREATE TABLE `donatore` (
   `nome` varchar(30) NOT NULL,
   `cognome` varchar(30) NOT NULL,
   `sesso` varchar(2) NOT NULL,
-  `via` varchar(50) DEFAULT NULL,
   `citta` varchar(50) NOT NULL,
-  `cap` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `gruppo_sanguigno` varchar(3) NOT NULL,
   `disponibilita` int(11) NOT NULL,
   `ultima_prenotazione` varchar(10) DEFAULT NULL,
-  `attivo` tinyint(1) NOT NULL DEFAULT 0
+  `attivo` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `donatore`
 --
 
-INSERT INTO `donatore` (`nome`, `cognome`, `sesso`, `via`, `citta`, `cap`, `email`, `password`, `gruppo_sanguigno`, `disponibilita`, `ultima_prenotazione`, `attivo`) VALUES
-('Francesca', 'Verdi', 'F', 'Pirandello, 23', 'Civitanova', 62012, 'francesca.verdi@unicam.it', 'francescaverdi', '0+', 1, '07/07/2019', 1),
-('Luigi', 'Bianchi', 'M', 'Circonvallazione, 6', 'Macerata', 62100, 'luigi.bianchi@unicam.it', 'luigibianchi', 'B-', 0, '', 1),
-('Mario', 'Rossi', 'M', 'Le Mosse, 11', 'Camerino', 62032, 'mario.rossi@unicam.it', 'mariorossi', 'A+', 1, '11/01/2020', 1);
+INSERT INTO `donatore` (`nome`, `cognome`, `sesso`, `citta`, `email`, `password`, `gruppo_sanguigno`, `disponibilita`, `ultima_prenotazione`, `attivo`) VALUES
+('Francesca', 'Verdi', 'F', 'Civitanova', 'francesca.verdi@unicam.it', 'francescaverdi', '0+', 1, '07/07/2019', 1),
+('Luigi', 'Bianchi', 'M', 'Macerata', 'luigi.bianchi@unicam.it', 'luigibianchi', 'B-', 0, '', 1),
+('Mario', 'Rossi', 'M', 'Camerino', 'mario.rossi@unicam.it', 'mariorossi', 'A+', 1, '11/01/2020', 1);
 
 -- --------------------------------------------------------
 
@@ -108,7 +106,7 @@ INSERT INTO `donatore` (`nome`, `cognome`, `sesso`, `via`, `citta`, `cap`, `emai
 CREATE TABLE `ora` (
   `ID` int(11) NOT NULL,
   `ora` varchar(10) NOT NULL,
-  `prenotata` tinyint(1) NOT NULL DEFAULT 0,
+  `prenotata` tinyint(1) NOT NULL DEFAULT '0',
   `ID_data` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -132,7 +130,7 @@ CREATE TABLE `prenotazione` (
   `ID` int(11) NOT NULL,
   `ID_ora` int(11) NOT NULL,
   `ID_utente` varchar(50) NOT NULL,
-  `eseguita` tinyint(1) NOT NULL DEFAULT 0
+  `eseguita` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -140,8 +138,8 @@ CREATE TABLE `prenotazione` (
 --
 
 INSERT INTO `prenotazione` (`ID`, `ID_ora`, `ID_utente`, `eseguita`) VALUES
-(1, 1, 'francesca.verdi@unicam.it', 0),
-(2, 2, 'mario.rossi@unicam.it', 0);
+(1, 1, 'francesca.verdi@unicam.it', 1),
+(2, 2, 'mario.rossi@unicam.it', 1);
 
 -- --------------------------------------------------------
 
@@ -157,7 +155,7 @@ CREATE TABLE `pronto_soccorso` (
   `cap` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `attivo` tinyint(1) NOT NULL DEFAULT 0
+  `attivo` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -182,7 +180,7 @@ CREATE TABLE `sede_avis` (
   `cap` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `attivo` tinyint(1) NOT NULL DEFAULT 0
+  `attivo` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
