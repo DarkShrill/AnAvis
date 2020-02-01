@@ -1,7 +1,6 @@
 package anAvis;
 
- import java.util.ArrayList;
-import java.util.List;
+ import java.util.List;
 
 /**
  * @author edoardo
@@ -24,7 +23,7 @@ public class AvaiableDateAndHours {
 
 	public AvaiableDateAndHours(String date, List<String> hours) {
 		this.date = date;
-		this.hours = hours;
+		this.hours = hours;	
 	}
 
 

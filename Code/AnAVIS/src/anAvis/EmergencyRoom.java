@@ -3,8 +3,7 @@ import java.util.List;
 
 import interfaces.Account;
 import interfaces.AccountType;
-import interfaces.NetworkInterface;
-import interfaces.ViewInterface;
+import view.Console;
 
 /**
  * 
@@ -44,15 +43,15 @@ public class EmergencyRoom implements Account {
 	/**
 	 * Network per invio richiesta lista donatori
 	 */
-	private NetworkInterface<?> network;
+	private Network<?> network;
 	
 	/**
 	 * Interfaccia Grafica
 	 */
-	private ViewInterface view;
+	private Console view;
 
 
-	public EmergencyRoom(String email, String password, String site, ViewInterface view, NetworkInterface<?> network) {
+	public EmergencyRoom(String email, String password, String site, Console view, Network<?> network) {
 		this.accountType = AccountType.EMERGENCY_ROOM;
 		this.accountToString = "PRONTO SOCCORSO";
 		this.email = email;
@@ -70,30 +69,34 @@ public class EmergencyRoom implements Account {
 
 	 * @return true se l'operazione è andata a buon fine, false altrimenti
 	 */
-	public boolean bloodEmergencyRequest(String bloodGroup) {
+	public boolean bloodEmergencyRequest() {
 		
-		List<Donor> emergencyDonorList = this.network.getEmergencyDonorList(this, bloodGroup);
+		String bloodGroup;
 		
-		if (emergencyDonorList == null) {
-			// SE QUALCOSA E' ANDATO STORTO
-			this.view.showRepeatOperationMessage();
-			return false;
-		}
+		bloodGroup = this.view.getBloodGroupForEmergencyRequest();
 		
 		if (!this.view.getConfirmation()) {
 			return false;
 		}
 		
+		List<Donor> emergencyDonorList = this.network.getEmergencyDonorList(this, bloodGroup);
+		
+		if (emergencyDonorList == null) {
+			// SE QUALCOSA E' ANDATO STORTO
+			this.view.showNoValideCandidateFound();
+			return false;
+		}
+	
 		return sendEmergencyRequest(emergencyDonorList);
-			
-		
-		
 	}
 	
 	
 	private boolean sendEmergencyRequest(List<Donor> emergencyDonorList) {	
-		//TODO
-		
+		Donor tmp;
+		for(int i=0; i<emergencyDonorList.size(); i++) {
+			tmp = emergencyDonorList.get(i);
+			System.out.println(tmp.getName() + " " + tmp.getSurname() + " - " + tmp.getResidence());
+		}
 		return true;
 	}
 

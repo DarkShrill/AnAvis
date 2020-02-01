@@ -246,6 +246,14 @@ public interface ViewInterface {
 	 * Questo messaggio notifica all'utente che sono state inserite delle date non
 	 * valide, quindi l'utente è pregato di rinserirle
 	 */
+	public void showMessageForInsertCorrectDate();
+	
+	public void showNoValideCandidateFound();
+	
+	/**
+	 * Questo messaggio notifica all'utente che sono stati inseriti degli orari non
+	 * validi, quindi l'utente è pregato di rinserirle
+	 */
 	public void showMessageForInsertCorrectHour();
 
 	/**

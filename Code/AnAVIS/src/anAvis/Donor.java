@@ -1,13 +1,15 @@
 package anAvis;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
 import interfaces.Account;
 import interfaces.AccountType;
-import interfaces.NetworkInterface;
-import interfaces.ViewInterface;
+import view.Console;
 
 /**
  * 
@@ -71,15 +73,17 @@ public class Donor implements Account {
 	/**
 	 * Network per invio richiesta prenotazione attuale
 	 */
-	private NetworkInterface<?> network;
+	private Network<?> network;
 	
 	/**
 	 * Interfaccia Grafica
 	 */
-	private ViewInterface view;
+	private Console view;
 
+	
+	
 	public Donor(String name, String surname, String email, String password, String bloodGroup, boolean enableToEmergencyRequest, 
-			NetworkInterface<?> network, ViewInterface view, String residence, char gender) {
+			Network<?> network, Console view, String residence, char gender) {
 		this.accountType = AccountType.DONOR;
 		this.accountToString = "DONOR";
 		this.name = name;
@@ -110,7 +114,7 @@ public class Donor implements Account {
 		
 		Form f = new Form();
 		if(f.compileForm() == null) {
-			return false;
+//			return false;
 		}
 		
 		List<String> list = network.getAvisOffices();
@@ -130,7 +134,7 @@ public class Donor implements Account {
 		}while(!corretInput);
 		
 		HashMap<String, String> dates = network.getAvisOfficesAviableDates(list.get(avisOffice));
-		String date = view.selectAvisOfficeDate((List<String>) dates.values());
+		String date = view.selectAvisOfficeDate(new LinkedList<String>(dates.values()));
 		
 		String id = "";
 		for(Entry<String, String> val : dates.entrySet()) {
@@ -157,7 +161,6 @@ public class Donor implements Account {
 	 * 
 	 * @return true se il donatore pu� effettuare una donazione, false altrimenti
 	 */
-	@SuppressWarnings("deprecation")
 	private boolean canDonate() {
 		
 		if(this.network.getReservation(this) != null) {
@@ -169,12 +172,16 @@ public class Donor implements Account {
 		
 		if(lastDonationDate !=null) {
 			
-			if(gender == 'M' && differenceBetweenTwoDates(new Date(), new Date(lastDonationDate)) < 90) {
-				return false;
-			
-			} else if(gender == 'F' && differenceBetweenTwoDates(new Date(), new Date(lastDonationDate)) < 180) {
+			try {
+				if(gender == 'M' && differenceBetweenTwoDates(new Date(), new SimpleDateFormat("dd/mm/yyyy").parse(lastDonationDate)) < 90) {
+					return false;
 				
-				return false;
+				} else if(gender == 'F' && differenceBetweenTwoDates(new Date(), new SimpleDateFormat("dd/mm/yyyy").parse(lastDonationDate)) < 180) {
+					
+					return false;
+				}
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
 			
 		}

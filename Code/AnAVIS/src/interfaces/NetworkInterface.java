@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import anAvis.AvaiableDateAndHours;
-import anAvis.AvisOffice;
 import anAvis.Donor;
 import anAvis.EmergencyRoom;
 import anAvis.Reservation;
@@ -124,7 +123,7 @@ public interface NetworkInterface<T extends Account> {
 	 * @param email
 	 * @return
 	 */
-	public <T extends Account> T getAccountData(AccountType account, String email);
+	public Account getAccountData(AccountType account, String email);
 	
 	
 

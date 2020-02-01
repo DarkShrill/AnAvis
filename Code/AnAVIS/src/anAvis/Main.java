@@ -1,11 +1,7 @@
 package anAvis;
 
-import java.util.Scanner;
-
 import interfaces.Account;
 import interfaces.AccountType;
-import interfaces.NetworkInterface;
-import interfaces.ViewInterface;
 import view.Console;
 
 /**
@@ -17,26 +13,22 @@ public class Main {
 	/**
 	 * @param args
 	 */
-	@SuppressWarnings("null")
 	public static void main(String[] args) {
-		
-		
-		String input = "";
-		boolean correctInput = false;
 		UnregisteredUser unUsr;
-		ViewInterface view;
-		NetworkInterface<?> network = null;
+		Console view;
+		Network<Account> network = null;
 		boolean loginStatus = false; 
 		String email="";
 		String password="";
 		AccountType accountType = AccountType.NOONE;
-		Doctor doctor;
+		Doctor doctor = null;
 		Donor donor = null;
-		EmergencyRoom emergency;
+		EmergencyRoom emergency = null;
 		AvisOffice avisSite = null;
 		
-		network = new Network();
 		view = new Console();
+		network = new Network<Account>(view);
+		
 		unUsr = new UnregisteredUser(view, network);
 		
 
@@ -51,10 +43,12 @@ public class Main {
 				unUsr.createAccount();
 				return;
 			case 2 :
-				accountType = view.getAccountType();
-				email = view.getEmail();
-				password = view.getPassword();
-				loginStatus = unUsr.loginToAccount(accountType,email,password);
+				do {
+					accountType = view.getAccountType();
+					email = view.getEmail();
+					password = view.getPassword();
+					loginStatus = unUsr.loginToAccount(accountType,email,password);	
+				}while(!loginStatus);
 				break;
 		}
 		
@@ -62,13 +56,13 @@ public class Main {
 			//SONO LOGGATO
 			
 			if (accountType == AccountType.DOCTOR) {
-				doctor = network.getAccountData(accountType, email);
+				doctor = (Doctor) network.getAccountData(accountType, email);
 			} else if (accountType == AccountType.DONOR) {
-				donor = network.getAccountData(accountType, email);
+				donor = (Donor) network.getAccountData(accountType, email);
 			} else if (accountType == AccountType.EMERGENCY_ROOM) {
-				emergency = network.getAccountData(accountType, email);
+				emergency = (EmergencyRoom) network.getAccountData(accountType, email);
 			} else if (accountType == AccountType.AVIS_OFFICE) {
-				avisSite = network.getAccountData(accountType, email);
+				avisSite = (AvisOffice) network.getAccountData(accountType, email);
 			}
 			
 			choice = view.showSubMenu(accountType);
@@ -79,7 +73,16 @@ public class Main {
 						avisSite.insertAvaibleDatesAndHours();
 					}
 					if(accountType == AccountType.DONOR) {
-						donor.reservationForBloodDonation();	
+						if(donor.reservationForBloodDonation()) {
+						 view.success();
+						} else {
+							view.cannotDonate();
+						}
+					}
+					if(accountType == AccountType.EMERGENCY_ROOM) {
+						if(emergency.bloodEmergencyRequest()) {
+							view.success();
+						}
 					}
 					return;
 				case 2 :

@@ -6,8 +6,7 @@ import java.util.List;
 
 import interfaces.Account;
 import interfaces.AccountType;
-import interfaces.NetworkInterface;
-import interfaces.ViewInterface;
+import view.Console;
 
 /**
  * 
@@ -44,11 +43,11 @@ public class AvisOffice implements Account {
 	 */
 	private String site;
 
-	NetworkInterface<?> network;
+	private Network<?> network;
 
-	ViewInterface view;
+	private Console view;
 
-	public AvisOffice(String email, String password, String sede, NetworkInterface<?> network, ViewInterface view) {
+	public AvisOffice(String email, String password, String sede, Network<?> network, Console view) {
 		this.accountType = AccountType.AVIS_OFFICE;
 		this.accountToString = "SEDE AVIS";
 		this.email = email;
@@ -68,6 +67,7 @@ public class AvisOffice implements Account {
 		String date;
 		List<String> hours;
 		boolean correctHours;
+		boolean correctDate;
 		List<AvaiableDateAndHours> listAvaiableDateAndHour = new ArrayList<>();
 
 		this.view.showMessageForInsertAvaiableDatesAndHours();
@@ -78,13 +78,23 @@ public class AvisOffice implements Account {
 
 			if (!wantExit) {
 
-				date = this.view.getAvaiableDate();
+				do {
+					date = this.view.getAvaiableDate();
+					correctDate = checkCorrectDate(date);
+					if(!correctDate) {
+						this.view.showMessageForInsertCorrectDate();
+					}
+					if(!correctDate) {
+						
+					}
+				}while(!correctDate);
+				
 				correctHours = false;
 
 				do {
 					hours = this.view.getAvaiableHours();
 
-					correctHours = this.checkCorretHours(hours);
+					correctHours = this.checkCorrectHours(hours);
 
 					if (!correctHours) {
 						this.view.showMessageForInsertCorrectHour();
@@ -111,7 +121,8 @@ public class AvisOffice implements Account {
 		if (!this.network.sendAvaiableDateAndHours(this.site, listAvaiableDateAndHour)) {
 			// SE QUALCOSA E' ANDATO STORTO
 			this.view.showRepeatOperationMessage();
-			this.view.goToMainView();
+		} else {
+			this.view.success();
 		}
 
 	}
@@ -121,13 +132,23 @@ public class AvisOffice implements Account {
 		Pair<Integer, String> date = null;
 		Pair<Integer, String> hour = null;
 		boolean correctHours = false;
+		boolean correctDate = false;
 
 		listAvaiableDateAndHour = this.network.getListAvaiableDateAndHours(this.site);
+		
+		String choice = this.view.getDateOrHours();
 
-		if (this.view.getDateOrHours().contains("DATE")) {
+		if (choice.contains("DATA")) {
 			// MODIFICA DELLA DATA
-			date = this.view.getAvaiableDate(listAvaiableDateAndHour, true);
-		} else {
+			do {
+				date = this.view.getAvaiableDate(listAvaiableDateAndHour, true);
+				correctDate = checkCorrectDate(date.getValue());
+				if(!correctDate) {
+					this.view.showMessageForInsertCorrectDate();
+				}
+			}while(!correctDate);
+			
+		} else if (choice.contains("ORARIO")) {
 			// MODIFICA DEGLI ORARI
 			do {
 				date = this.view.getAvaiableDate(listAvaiableDateAndHour, false);
@@ -136,7 +157,7 @@ public class AvisOffice implements Account {
 				List<String> tmpHourList = new LinkedList<String>();
 				tmpHourList.add(hour.getValue());
 
-				correctHours = this.checkCorretHours(tmpHourList);
+				correctHours = this.checkCorrectHours(tmpHourList);
 
 				if (!correctHours) {
 					this.view.showMessageForInsertCorrectHour();
@@ -159,10 +180,14 @@ public class AvisOffice implements Account {
 				hour == null ? -1 : hour.getKey(), date.getValue(), hour == null ? "" : hour.getValue())) {
 			// SE QUALCOSA E' ANDATO STORTO
 			this.view.showRepeatOperationMessage();
-			this.view.goToMainView();
+		} else {
+			view.success();
 		}
 	}
 
+	private boolean checkCorrectDate(String date) {
+		return date.matches("^([0-2][0-9]|3[0-1])\\/(0[1-9]|1[1-2])\\/2[0-9]{3}$");
+	}
 	/**
 	 * Questo metodo permette di verificare se le date inserite sono corrette
 	 * secondo il formato HH:MM
@@ -172,34 +197,12 @@ public class AvisOffice implements Account {
 	 * 
 	 * @return boolean
 	 */
-	private boolean checkCorretHours(List<String> hours) {
+	private boolean checkCorrectHours(List<String> hours) {
 
 		for (String str : hours) {
-			// DEVE ESSERE LUNGO 5 PERCHE COMPOSTO COSI : HH:MM
-			if (str.length() != 5) {
+			if(str.matches("^([0|1][0-9]|2[0-3]):[0-5][0-9]$") == false) {
 				return false;
 			}
-
-			char hourL = str.charAt(0);
-			char hourR = str.charAt(1);
-
-			if (hourL > 2) {
-				return false;
-			}
-			if ((hourL == 2) && (hourR > 4)) {
-				return false;
-			}
-
-			char minuteL = str.charAt(3);
-			char minuteR = str.charAt(4);
-
-			if (minuteL > 6) {
-				return false;
-			}
-			if ((minuteL == 6) && (minuteR >= 0)) {
-				return false;
-			}
-
 		}
 
 		return true;

@@ -1,7 +1,9 @@
 package anAvis;
+import interfaces.Account;
 import interfaces.AccountType;
 import interfaces.NetworkInterface;
 import interfaces.ViewInterface;
+import view.Console;
 
 /**
  * 
@@ -79,12 +81,12 @@ public class UnregisteredUser {
 	/**
 	 * Interfaccia Grafica
 	 */
-	private ViewInterface view;
+	private Console view;
 
 	/**
 	 * Network per invio richiesta creazione account
 	 */
-	private NetworkInterface<?> network;
+	private Network<Account> network;
 
 	/**
 	 * Questo metodo permette di ritornare la stringa che identifica il tipo di
@@ -115,7 +117,7 @@ public class UnregisteredUser {
 	 * @param view -> interfaccia grafica
 	 * @parm network -> Network per invio richiesta creazione account
 	 */
-	public UnregisteredUser(ViewInterface view, NetworkInterface<?> network) {
+	public UnregisteredUser(Console view, Network<Account> network) {
 
 		this.network = network;
 		this.view = view;
@@ -169,6 +171,8 @@ public class UnregisteredUser {
 			// SE QUALCOSA E' ANDATO STORTO
 			this.view.showRepeatOperationMessage();
 			return false;
+		} else {
+			this.view.activationRequestSent();
 		}
 
 		return true;
@@ -198,19 +202,19 @@ public class UnregisteredUser {
 	 * 
 	 * @return account
 	 */
-	@SuppressWarnings("unchecked")
-	public <T> T getAccount() {
+	
+	public Account getAccount() {
 		if (this.accountType == AccountType.DONOR) {
-			return (T) this.donor;
+			return this.donor;
 		}
 		if (this.accountType == AccountType.DOCTOR) {
-			return (T) this.doctor;
+			return this.doctor;
 		}
 		if (this.accountType == AccountType.EMERGENCY_ROOM) {
-			return (T) this.emergency;
+			return this.emergency;
 		}
 		if (this.accountType == AccountType.AVIS_OFFICE) {
-			return (T) this.avisSite;
+			return this.avisSite;
 		}
 		return null;
 	}

@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import interfaces.Account;
 import interfaces.AccountType;
 import interfaces.NetworkInterface;
+import view.Console;
 
 /**
  * @author marica
@@ -21,12 +22,15 @@ import interfaces.NetworkInterface;
 public class Network<T extends Account> implements NetworkInterface<T> {
 
 	private Connection connection;
+	private Console view;
 
-	public Network() {
+	public Network(Console view) {
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/anavis?", "admin", "admin");
+			connection = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/anavis?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+					"root", "");
+			this.view = view;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -73,7 +77,7 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 			e.printStackTrace();
 
 			return false;
-		}catch (NullPointerException e) {
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 
 			return false;
@@ -86,7 +90,7 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 		String emergencyRoomId = null;
 		LinkedList<Donor> list = new LinkedList<Donor>();
 
-		String query1 = "SELECT pronto_soccorso.ID FROM pronto_soccorso" + "WHERE pronto_soccorso.ID = '"
+		String query1 = "SELECT pronto_soccorso.ID FROM pronto_soccorso WHERE pronto_soccorso.nome_ospedale = '"
 				+ emergencyRoom.getSite() + "'";
 
 		try {
@@ -94,7 +98,7 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 			PreparedStatement pstmt = connection.prepareStatement(query1);
 			ResultSet result = pstmt.executeQuery();
 
-			while (result.next()) {
+			if (result.next()) {
 				emergencyRoomId = result.getString("ID");
 			}
 
@@ -108,10 +112,10 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 			return null;
 		}
 
-		String query2 = "SELECT nome, cognome, email, gruppo_sanguigno, disponibilita, citta, sesso FROM donatore"
-				+ "JOIN distanza JOIN pronto_soccorso ON email = distanza.ID_donatore "
-				+ "AND pronto_soccorso.ID = distanza.ID_pronto_soccorso WHERE donatore.disponibilita = 1"
-				+ "AND donatore.gruppo_sanguigno = '" + bloodGroup + "' AND distanza.distanza <= 40";
+		String query2 = "SELECT donatore.nome, donatore.cognome, donatore.email, donatore.gruppo_sanguigno, donatore.disponibilita, donatore.citta, donatore.sesso FROM donatore "
+				+ "JOIN distanza JOIN pronto_soccorso ON donatore.email = distanza.ID_donatore "
+				+ "AND pronto_soccorso.ID = distanza.ID_pronto_soccorso WHERE donatore.disponibilita = 1 AND pronto_soccorso.ID = "
+				+ emergencyRoomId + " AND donatore.gruppo_sanguigno = '" + bloodGroup + "' AND distanza.distanza <= 40";
 
 		try {
 
@@ -138,21 +142,17 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 	public Reservation getReservation(Donor donor) {
 
 		String query = "SELECT nome_sede, data, ora FROM sede_avis JOIN data JOIN ora JOIN donatore JOIN prenotazione "
-				+ "ON prenotazione.ID_ora = ora.ID AND prenotazione.ID_utente = '" + donor.getEmail() + "' AND "
-				+ "ora.ID_data = data.ID AND data.ID_sede_avis = sede_avis.ID ORDER BY prenotazione.ID DESC";
-
+				+ "ON prenotazione.ID_ora = ora.ID AND prenotazione.ID_utente = donatore.email  AND "
+				+ "ora.ID_data = data.ID AND data.ID_sede_avis = sede_avis.ID WHERE donatore.email = '"
+				+ donor.getEmail() + "' AND eseguita = 0 ORDER BY prenotazione.ID DESC";
 		try {
 
 			PreparedStatement pstmt = connection.prepareStatement(query);
 			ResultSet result = pstmt.executeQuery();
 
-			while (result.next()) {
-				if (result.getString("eseguita").equals("0")) {
-					return new Reservation(result.getString("nome_sede"), result.getString("data"),
-							result.getString("ora"));
-				} else {
-					return null;
-				}
+			if (result.next()) {
+				return new Reservation(result.getString("nome_sede"), result.getString("data"),
+						result.getString("ora"));
 			}
 
 			return null;
@@ -215,7 +215,7 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 	public HashMap<String, String> getAvisOfficesAviableDates(String avis) {
 
 		HashMap<String, String> list = new HashMap<String, String>();
-		String query = "SELECT data FROM data JOIN sede_avis ON data.ID_sede_avis = sede_avis.ID "
+		String query = "SELECT data.ID, data.data FROM data JOIN sede_avis ON data.ID_sede_avis = sede_avis.ID "
 				+ "WHERE sede_avis.nome_sede = '" + avis + "'";
 
 		try {
@@ -249,7 +249,7 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 			ResultSet result = pstmt.executeQuery();
 
 			while (result.next()) {
-				list.add(result.getString("data"));
+				list.add(result.getString("ora"));
 			}
 
 			return list;
@@ -472,9 +472,8 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 		return false;
 	}
 
-	@SuppressWarnings({ "resource", "unchecked" })
 	@Override
-	public <T extends Account> T getAccountData(AccountType accountType, String email) {
+	public Account getAccountData(AccountType accountType, String email) {
 
 		String query = null;
 		PreparedStatement pstmt;
@@ -491,11 +490,14 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 				pstmt = connection.prepareStatement(query);
 				result = pstmt.executeQuery();
 
-				while (result.next()) {
-					return (T) new Donor(result.getString("nome"), result.getString("cognome"), result.getString("email"),
-							"", result.getString("gruppo_sanguigno"),
-							result.getString("disponibilita").equals("0") ? false : true, null, null,
+				if (result.next()) {
+					Donor d = new Donor(result.getString("nome"), result.getString("cognome"),
+							result.getString("email"), "", result.getString("gruppo_sanguigno"),
+							result.getString("disponibilita").equals("0") ? false : true, this, view,
 							result.getString("citta"), result.getString("sesso").charAt(0));
+					pstmt.close();
+					result.close();
+					return d;
 				}
 
 				pstmt.close();
@@ -507,8 +509,12 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 				pstmt = connection.prepareStatement(query);
 				result = pstmt.executeQuery();
 
-				while (result.next()) {
-					return (T) new AvisOffice(result.getString("email"), "", result.getString("nome_sede"), null, null);
+				if (result.next()) {
+					AvisOffice avis = new AvisOffice(result.getString("email"), "", result.getString("nome_sede"), this,
+							view);
+					pstmt.close();
+					result.close();
+					return avis;
 				}
 
 				pstmt.close();
@@ -520,8 +526,12 @@ public class Network<T extends Account> implements NetworkInterface<T> {
 				pstmt = connection.prepareStatement(query);
 				result = pstmt.executeQuery();
 
-				while (result.next()) {
-					return (T) new EmergencyRoom(result.getString("email"), "", result.getString("nome_sede"), null, null);
+				if (result.next()) {
+					EmergencyRoom e = new EmergencyRoom(result.getString("email"), "", result.getString("nome_ospedale"),
+							view, this);
+					pstmt.close();
+					result.close();
+					return e;
 				}
 
 				pstmt.close();
